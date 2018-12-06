@@ -3,10 +3,9 @@
 This is project use laravel module and reactjs
 
 ## Install
-
-clone and run:
-    - cd your project
-    - composer install
-    - npm install
-    - npm run watch
-    - php artisan serve
+```bash
+git clone https://github.com/tenhayko/laravel-react-module.git
+cd laravel-react-module && composer install && npm install
+php artisan serve
+npm run dev
+```
