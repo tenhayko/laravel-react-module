@@ -25,22 +25,22 @@
             </div>
             <div class="col-md-4 login-form h-100vh" style="min-width:320px">
                 <div>
-                    <h4 class="fw-300 c-grey-900 mB-40">Login</h4>
+                    <h4 class="fw-300 c-grey-900 mB-40 un-select">Login</h4>
                     <form>
                         <div class="form-group">
-                            <label class="text-normal text-dark">Username</label>
+                            <label class="text-normal text-dark un-select">Username</label>
                             <input type="email" class="form-control" placeholder="John Doe">
                         </div>
                         <div class="form-group">
-                            <label class="text-normal text-dark">Password</label>
+                            <label class="text-normal text-dark un-select">Password</label>
                             <input type="password" class="form-control" placeholder="Password">
                         </div>
                         <div class="form-group">
                             <div class="peers ai-c jc-sb fxw-nw">
                                 <div class="float-left">
                                     <div class="checkbox checkbox-circle checkbox-info peers ai-c">
-                                        <input type="checkbox" id="inputCall1" name="inputCheckboxesCall" class="peer" checked>
-                                        <label for="inputCall1"><span class="peer peer-greed">Remember Me</span></label>
+                                        <input type="checkbox" id="inputCall1" name="inputCheckboxesCall" class="peer cur-p" checked>
+                                        <label for="inputCall1"><span class="peer peer-greed un-select cur-p">Remember Me</span></label>
                                     </div>
                                 </div>
                                 <div class="float-right">
