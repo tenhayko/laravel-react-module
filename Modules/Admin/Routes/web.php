@@ -11,13 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::prefix('admin')->group(function() {
+    Route::get('/', 'AdminController@index');
+    Route::get('/login', 'Auth\AdminLoginController@showLoginForm');
 });
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
-// Route::get( '/{path?}', function(){
-//     return view('blog::index');
-// } )->where('path', '.*');
