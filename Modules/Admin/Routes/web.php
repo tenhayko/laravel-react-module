@@ -11,7 +11,7 @@
 |
 */
 
-Route::prefix('admin')->group(function() {
-    Route::get('/', 'AdminController@index');
+Route::name('admin.')->prefix('admin')->group(function () {
+    Route::get('/', 'AdminController@index')->name('dashboard');
     Route::get('/login', 'Auth\AdminLoginController@showLoginForm');
 });

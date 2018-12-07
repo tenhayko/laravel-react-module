@@ -1,0 +1,207 @@
+
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+@import "node_modules/font-awesome/scss/font-awesome.scss";
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+.navbar-laravel {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+.mh-100vh {
+  min-height: 100vh;
+}
+.bg-g {
+  background-color: $green;
+}
+.w-280 {
+  width: 280px;
+}
+.w-100-280 {
+  width: calc(100% - 280px);
+}
+.bg-b {
+  background-color: $blue;
+}
+.bg-w {
+  background-color: $while;
+}
+// sidebar
+.sidebar {
+  background-color: $white;
+  bottom: 0;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  -webkit-transition: all .2s ease;
+  -o-transition: all .2s ease;
+  transition: all .2s ease;
+  z-index: 1000;
+}
+.sidebar-inner {
+  position: relative;
+  height: 100%;
+}
+.sidebar-logo {
+  border-bottom: 1px solid rgba(0,0,0,.0625);
+  border-right: 1px solid rgba(0,0,0,.0625);
+  line-height: 0;
+  padding: 0 20px;
+  -webkit-transition: all .2s ease;
+  -o-transition: all .2s ease;
+  transition: all .2s ease;
+}
+.ai-c {
+  -webkit-box-align: center !important;
+  -ms-flex-align: center !important;
+  align-items: center !important;
+}
+.fxw-nw {
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+}
+.peers {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  display: -webkit-box!important;
+  display: -ms-flexbox!important;
+  display: flex!important;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: flex-start;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-flow: row wrap;
+  flex-flow: row wrap;
+  height: auto;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+.peer-greed, .peers-greed>.peer, .peers-greed>.peers {
+  -webkit-box-flex: 1;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+}
+.peer {
+  display: block;
+  height: auto;
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+}
+.sidebar-logo a {
+  display: inline-block;
+  width: 100%;
+}
+.td-n {
+  text-decoration: none!important;
+}
+.sidebar-logo a .logo {
+  background-position: 0;
+  background-repeat: no-repeat;
+  display: inline-block;
+  min-height: 64px;
+  width: 100%;
+  width: 70px;
+}
+.peer-greed, .peers-greed>.peer, .peers-greed>.peers {
+  -webkit-box-flex: 1;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+}
+.sidebar-logo a .logo-text {
+  color: #313435;
+}
+.lh-1 {
+  line-height: 1!important;
+}
+.mB-0 {
+  margin-bottom: 0!important;
+}
+
+// menu
+.sidebar ul {
+  list-style-type: none;
+}
+.ps {
+  overflow: hidden!important;
+  overflow-anchor: none;
+  -ms-overflow-style: none;
+  touch-action: auto;
+  -ms-touch-action: auto;
+}
+.pos-r {
+  position: relative!important;
+}
+.sidebar-menu {
+  border-right: 1px solid rgba(0,0,0,.0625);
+  height: calc(100vh - 65px);
+  list-style: none;
+  margin: 0;
+  overflow: auto;
+  padding: 0;
+  position: relative;
+}
+.sidebar-menu li {
+  position: relative;
+}
+.mT-30 {
+  margin-top: 30px!important;
+}
+.sidebar-menu>li>a {
+  display: block;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 5px 15px;
+  position: relative;
+  white-space: nowrap;
+}
+.sidebar-menu li a {
+  color: #72777a;
+  -webkit-transition: all .3s ease;
+  -o-transition: all .3s ease;
+  transition: all .3s ease;
+}
+.sidebar-menu>li>a .icon-holder {
+  border-radius: 6px;
+  display: inline-block;
+  font-size: 17px;
+  height: 35px;
+  left: 0;
+  line-height: 35px;
+  margin-right: 14px;
+  position: relative;
+  text-align: center;
+  -webkit-transition: all .3s ease;
+  -o-transition: all .3s ease;
+  transition: all .3s ease;
+  width: 35px;
+}
+[class*=" ti-"], [class^=ti-] {
+  font-family: themify;
+  speak: none;
+  font-style: normal;
+  font-weight: 400;
+  -webkit-font-feature-settings: normal;
+  font-feature-settings: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.c-blue-500, .cH-blue-500:hover {
+  color: #2196f3!important;
+}
+.ti-home:before {
+  content: "\E69B";
+}
