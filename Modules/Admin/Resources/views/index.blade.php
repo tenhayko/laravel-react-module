@@ -2,7 +2,7 @@
 
 @section('content')
     <div>
-        <div class="sidebar bg-g mh-100vh w-280 float-left">
+        <div class="sidebar bg-g mh-100vh w-280">
             <div class="sidebar-inner">
                 <div class="sidebar-logo">
                     <div class="peers ai-c fxw-nw">
@@ -50,7 +50,7 @@
                 {{-- end menu --}}
             </div>
         </div>
-        <div class="main-conten bg-w mh-100vh w-100-280 float-left">
+        <div class="main-conten bg-w mh-100vh">
 
         </div>
     </div>
