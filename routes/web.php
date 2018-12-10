@@ -18,6 +18,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('admin/chat', 'HomeController@chat')->name('chat');
+Route::get('admin/test', 'HomeController@test')->name('test');
 // Route::get( '/{path?}', function(){
 //     return view('blog::index');
 // } )->where('path', '.*');

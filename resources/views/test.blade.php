@@ -49,7 +49,7 @@
                 {{-- end menu --}}
             </div>
         </div>
-        <div class="page-container">
+        <div class="page-container bg-w mh-100vh">
             <div class="header navbar">
                 <div class="header-container">
                     <ul class="nav-left">
@@ -184,16 +184,16 @@
                         </li>
                     </ul>
                 </div>
-            </div>
+            </div>     
             {{-- end header --}}
             <main class="main-content bgc-grey-100">
                 <div id="mainContent">
-
+                    
                 </div>
             </main>
-            {{-- end main --}}
             <footer class="bdT ta-c p-30 lh-0 fsz-sm c-grey-600">
-                <span>Copyright © 2017 Designed by <a href="https://colorlib.com" target="_blank" title="Colorlib">Colorlib</a>. All rights reserved.</span>
+                <span>Copyright © 2017 Designed by <a href="https://colorlib.com" target="_blank" title="Colorlib">Colorlib</a>. All rights reserved.
+                </span>
             </footer>
         </div>
     </div>
