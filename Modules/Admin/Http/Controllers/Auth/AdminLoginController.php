@@ -13,10 +13,12 @@ class AdminLoginController extends Controller
      *
      * @return void
      */
+
     public function __construct()
     {
         $this->middleware('guest:admin')->except('logout');
     }
+
     /**
      * Show the application’s login form.
      *
@@ -31,10 +33,31 @@ class AdminLoginController extends Controller
     }
     
     use AuthenticatesUsers;
+
     /**
      * Where to redirect users after login.
      *
      * @var string
      */
-    protected $redirectTo = '/admin/dashboard';
+    protected $redirectTo = '/admin';
+
+    /**
+     * You can overwrite the login method
+     */
+    // public function login(Request $req)
+    // {
+    //     $this->validate($req,[
+    //         'email'=>'required|email',
+    //         'password'=>'required|min:6',
+    //     ]);
+    //     if (Auth::guard('admin')->attempt(['email'=>$req->email, 'password'=>$req->password], $req->remember)) {
+    //         return redirect()->intended(route('admin'));
+    //     }
+    //     return redirect()->back()->withInput($req->only('email', 'remember'));
+    // }
+    public function logout()
+    {
+        Auth::guard('admin')->logout();
+        return redirect()->route('admin.login');
+    }
 }
