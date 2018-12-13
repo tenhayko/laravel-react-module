@@ -29,11 +29,11 @@
                         @csrf
                         <div class="form-group">
                             <label class="text-normal text-dark un-select">Username</label>
-                            <input type="email" name="email" class="form-control" placeholder="John Doe">
+                            <input type="email" name="email" class="form-control" placeholder="John Doe" value="tenhayko@gmail.com">
                         </div>
                         <div class="form-group">
                             <label class="text-normal text-dark un-select">Password</label>
-                            <input type="password" name="password" class="form-control" placeholder="Password">
+                            <input type="password" name="password" class="form-control" placeholder="Password" value="123456">
                         </div>
                         <div class="form-group">
                             <div class="peers ai-c jc-sb fxw-nw">
