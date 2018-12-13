@@ -13,3 +13,4 @@ npm run dev
 https://colorlib.com/polygon/adminator/
 ## editor
 https://www.froala.com/wysiwyg-editor/docs/framework-plugins/react
+https://reactjsexample.com/tag/editor/#
