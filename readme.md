@@ -9,6 +9,7 @@ cd laravel-react-module && composer install && npm install
 php artisan serve
 npm run dev
 ```
+```bash
 ## Html
 https://colorlib.com/polygon/adminator/
 
@@ -26,3 +27,9 @@ https://colorlib.com/polygon/adminator/
 ##Drag and drop
 -https://github.com/atlassian/react-beautiful-dnd
 -https://codepen.io/adamaoc/pen/GoKZKE
+
+##chat
+https://pusher.com/tutorials/chat-laravel/
+https://www.youtube.com/watch?v=5pnsloZzYQM
+https://github.com/AfikDeri/laravel-react-webrtc-video-chat
+```
