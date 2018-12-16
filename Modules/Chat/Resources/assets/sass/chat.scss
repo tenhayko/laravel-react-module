@@ -1,0 +1,29 @@
+@import '~bootstrap/scss/bootstrap';
+
+.video-container {
+    width: 500px;
+    height: 380px;
+    margin: 0px auto;
+    border: solid 1px #645cff;
+    position: relative;
+    box-shadow: 1px 1px 11px #9e9e9e;
+    .my-video {
+        width: 130px;
+        position: absolute;
+        left: 10px;
+        bottom: 10px;
+        border: 1px solid #2196F3;
+        border-radius: 5px;
+        z-index: 2;
+    }
+    .user-video {
+        position: absolute;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+}

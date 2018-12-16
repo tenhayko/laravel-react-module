@@ -2,5 +2,6 @@
     "/js/app.js": "/js/app.js",
     "/admin_assets/css/admin.css": "/admin_assets/css/admin.css",
     "/admin_assets/css/admin-login.css": "/admin_assets/css/admin-login.css",
+    "/chat_assets/css/chat.css": "/chat_assets/css/chat.css",
     "/css/app.css": "/css/app.css"
 }

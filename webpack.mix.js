@@ -14,4 +14,5 @@ const mix = require('laravel-mix');
 mix.react('resources/js/app.js', 'public/js')
    .sass('resources/sass/admin.scss', 'public/admin_assets/css')
    .sass('Modules/Admin/Resources/assets/sass/admin-login.scss', 'public/admin_assets/css')
+   .sass('Modules/Chat/Resources/assets/sass/chat.scss', 'public/chat_assets/css')
    .sass('resources/sass/app.scss', 'public/css');
