@@ -32,4 +32,6 @@ https://colorlib.com/polygon/adminator/
 https://pusher.com/tutorials/chat-laravel/
 https://www.youtube.com/watch?v=5pnsloZzYQM
 https://github.com/AfikDeri/laravel-react-webrtc-video-chat
+##fb
+https://kevww.wordpress.com/2013/01/23/facebook-share-and-like-with-javascript-callback/
 ```
