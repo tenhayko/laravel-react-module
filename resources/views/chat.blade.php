@@ -10,10 +10,7 @@
                             <a class="sidebar-link td-n" href="{{ route('admin.dashboard') }}">
                                 <div class="peers ai-c fxw-nw">
                                     <div class="peer">
-                                        <div class="logo"><img src="https://colorlib.com/polygon/adminator/assets/static/images/logo.png" alt=""></div>
-                                    </div>
-                                    <div class="peer peer-greed">
-                                        <h5 class="lh-1 mB-0 logo-text">Adminator</h5>
+                                        <div class="logo"><img src="/images/logo2.png" alt=""></div>
                                     </div>
                                 </div>
                             </a>
