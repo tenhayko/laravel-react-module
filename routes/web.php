@@ -20,6 +20,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('admin/chat', 'HomeController@chat')->name('chat');
 Route::get('admin/test', 'HomeController@test')->name('test');
+Route::post('upload', 'HomeController@upload')->name('upload');
 // Route::get( '/{path?}', function(){
 //     return view('blog::index');
 // } )->where('path', '.*');

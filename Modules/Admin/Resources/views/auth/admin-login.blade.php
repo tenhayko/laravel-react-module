@@ -12,6 +12,7 @@
 
     </head>
     <body id="login">
+            <img src="data:image/png;base64,{{ chunk_split(base64_encode('blob:http://app.local/defbc5c3-c583-4364-a884-883c73aadb5a')) }}" height="100" width="100">
         <div class="row">
             <div class="col-md-8 h-100vh image-login">
             <!-- logo -->

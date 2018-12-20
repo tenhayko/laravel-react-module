@@ -23,6 +23,7 @@
     },
     "dependencies": {
         "font-awesome": "^4.7.0",
+        "react-froala-wysiwyg": "^2.9.1",
         "react-router-dom": "^4.3.1"
     }
 }
