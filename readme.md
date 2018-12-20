@@ -16,6 +16,7 @@ https://colorlib.com/polygon/adminator/
 ## Editor
 -https://www.froala.com/wysiwyg-editor/docs/framework-plugins/react
 -https://reactjsexample.com/tag/editor/#
+https://github.com/froala/react-froala-wysiwyg/issues/71
 
 ##Upload file
 -https://makitweb.com/drag-and-drop-file-upload-with-jquery-and-ajax/
