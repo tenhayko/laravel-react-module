@@ -38,6 +38,7 @@ class HomeController extends Controller
     {
         echo "<pre>";
         print_r($requsest->all());
+    }
     public function authenticate()
     {
         echo 'string';
