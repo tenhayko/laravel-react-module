@@ -15,3 +15,5 @@ require('./bootstrap');
 
 require('./components/Example');
 require('./components/EditorComponent');
+require('./components/App');
+require('./components/Chat');

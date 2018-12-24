@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>Admin login</title>
-        <link rel="icon" href="/images/download.png">
+        <link rel="icon" href="/images/ngaoo-logo.png">
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
         <link rel="stylesheet" type="text/css" href="{{ asset('admin_assets/css/admin-login.css') }}">
