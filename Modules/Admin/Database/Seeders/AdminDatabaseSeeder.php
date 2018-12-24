@@ -15,7 +15,17 @@ class AdminDatabaseSeeder extends Seeder
     public function run()
     {
         Model::unguard();
-
-        // $this->call("OthersTableSeeder");
+        DB::table('admins')->insert([
+            [
+                'name' => str_random(10),
+                'email' => 'tenhayko@gmail.com',
+                'password' => bcrypt('123456'),
+            ],
+            [
+                'name' => str_random(10),
+                'email' => 'tenhayko2@gmail.com',
+                'password' => bcrypt('123456'),
+            ]
+        ]);
     }
 }
