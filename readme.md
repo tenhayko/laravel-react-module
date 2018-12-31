@@ -16,6 +16,7 @@ https://colorlib.com/polygon/adminator/
 ## Editor
 -https://www.froala.com/wysiwyg-editor/docs/framework-plugins/react
 -https://reactjsexample.com/tag/editor/#
+https://github.com/froala/react-froala-wysiwyg/issues/71
 
 ##Upload file
 -https://makitweb.com/drag-and-drop-file-upload-with-jquery-and-ajax/
@@ -37,4 +38,6 @@ https://stackoverflow.com/questions/37620694/how-to-scroll-to-bottom-in-react
 ##fb
 https://kevww.wordpress.com/2013/01/23/facebook-share-and-like-with-javascript-callback/
 https://stackoverflow.com/questions/23116001/facebook-like-and-share-button-with-callback
+##react select
+https://github.com/JedWatson/react-select
 ```

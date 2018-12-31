@@ -34,6 +34,11 @@ class HomeController extends Controller
     {
         return view('test');
     }
+    public function upload(Request $requsest)
+    {
+        echo "<pre>";
+        print_r($requsest->all());
+    }
     public function authenticate()
     {
         echo 'string';
