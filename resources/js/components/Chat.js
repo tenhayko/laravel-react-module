@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import Messenger from './../../../Modules/Chat/Resources/assets/js/components/Messenger';
+import Messages from './../../../Modules/Chat/Resources/assets/js/components/Messages';
 class Chat extends Component {
   render () {
     return (
         <div>
-          <Messenger />
+          <Messages />
         </div>
     )
   }
 }
 
 
-if (document.getElementById('chat')) {
-    ReactDOM.render(<Chat />, document.getElementById('chat'));
+if (document.getElementById('messages')) {
+    ReactDOM.render(<Chat />, document.getElementById('messages'));
 }

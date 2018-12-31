@@ -44,9 +44,9 @@ class ChatController extends Controller
     {
         $user = Auth::user();
         $channelName = 'channel-chat';
-        $message = $user->messages()->create([
-            'message' => $request->input('message')
-        ]);
+        // $message = $user->messages()->create([
+        //     'message' => $request->input('message')
+        // ]);
         $pusher = new Pusher('b7a1e4b0955d704d953c', 'e329ea5ade45144307f6', '673416', [
             'cluster' => 'ap2',
             'encrypted' => true
