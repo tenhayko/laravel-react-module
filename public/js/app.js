@@ -80534,6 +80534,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 var APP_KEY = 'b7a1e4b0955d704d953c';
+function NumberList(props) {
+    return __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
+        'ul',
+        null,
+        'abc'
+    );
+}
 
 var Messages = function (_Component) {
     _inherits(Messages, _Component);
@@ -80544,7 +80551,10 @@ var Messages = function (_Component) {
         var _this = _possibleConstructorReturn(this, (Messages.__proto__ || Object.getPrototypeOf(Messages)).call(this, props));
 
         _this.state = {
+            convesation: [],
             messages: [],
+            cailon: [],
+            users: [],
             message: ''
         };
         _this.user = window.user;
@@ -80552,10 +80562,85 @@ var Messages = function (_Component) {
         _this.sendMessage = _this.sendMessage.bind(_this);
         _this.handleFieldChange = _this.handleFieldChange.bind(_this);
         _this.handleKeyPress = _this.handleKeyPress.bind(_this);
+        _this.getListUser = _this.getListUser.bind(_this);
+        _this.fetchMessages = _this.fetchMessages.bind(_this);
         return _this;
     }
 
     _createClass(Messages, [{
+        key: 'getListUser',
+        value: function getListUser() {
+            var _this2 = this;
+
+            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get('/admin/user/list').then(function (response) {
+                _this2.setState({
+                    users: response.data
+                });
+            });
+        }
+    }, {
+        key: 'pushMessage',
+        value: function pushMessage(data) {
+            if (data.user_id != this.user.id) {
+                var lats = this.state.messages[this.state.messages.length - 1];
+                var newms = {
+                    user_id: data.user_id,
+                    message: [{ messages: data.messages }]
+                };
+                var ms = {
+                    messages: data.messages
+                };
+                if (this.state.messages.length && lats.user_id == data.user_id) {
+                    this.state.messages[this.state.messages.length - 1].message.push(ms);
+                    this.setState({
+                        messages: this.state.messages
+                    });
+                } else {
+                    this.setState({
+                        messages: this.state.messages.concat([newms])
+                    });
+                }
+            }
+        }
+    }, {
+        key: 'fetchMessages',
+        value: function fetchMessages() {
+            var _this3 = this;
+
+            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get('/chat/messages').then(function (response) {
+                _this3.setState({
+                    convesation: response.data,
+                    messages: response.data.messages
+                });
+                var eventLs = 'new-message-' + _this3.state.convesation.id;
+                _this3.channel.bind(eventLs, function (data) {
+                    this.pushMessage(data);
+                }.bind(_this3));
+            });
+        }
+    }, {
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+            console.log('starting...');
+        }
+    }, {
+        key: 'scrollToBottom',
+        value: function scrollToBottom() {
+            this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.getListUser();
+            this.fetchMessages();
+            this.scrollToBottom();
+        }
+    }, {
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate() {
+            this.scrollToBottom();
+        }
+    }, {
         key: 'setupPusher',
         value: function setupPusher() {
             this.pusher = new __WEBPACK_IMPORTED_MODULE_1_pusher_js___default.a(APP_KEY, {
@@ -80563,9 +80648,6 @@ var Messages = function (_Component) {
                 forceTLS: true
             });
             this.channel = this.pusher.subscribe('channel-chat');
-            this.channel.bind('new-message', function (data) {
-                console.log(data);
-            });
         }
     }, {
         key: 'sendMessage',
@@ -80576,17 +80658,26 @@ var Messages = function (_Component) {
     }, {
         key: 'addMessage',
         value: function addMessage(message) {
-            var ms = {
-                user: {
-                    name: 'duc',
-                    id: 1
-                },
-                message: message
+            var newms = {
+                user_id: this.user.id,
+                message: [{ messages: message }]
             };
-            this.setState({
-                messages: this.state.messages.concat([ms])
-            });
-            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('/chat/messages', ms).then(function (response) {
+            var data = {
+                messages: message,
+                conversation_id: this.state.convesation.id
+            };
+            var ms = {
+                messages: message
+            };
+            var lats = this.state.messages[this.state.messages.length - 1];
+            if (this.state.messages.length && lats.user_id == this.user.id) {
+                this.state.messages[this.state.messages.length - 1].message.push(ms);
+            } else {
+                this.setState({
+                    messages: this.state.messages.concat([newms])
+                });
+            }
+            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('/chat/messages', data).then(function (response) {
                 // console.log(response.data);
             });
         }
@@ -80605,243 +80696,204 @@ var Messages = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
+            var _this4 = this;
+
             return __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
                 'div',
-                null,
+                { className: 'peers fxw-nw pos-r' },
                 __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
                     'div',
-                    { className: 'layers h-100' },
+                    { className: 'peer bdR', id: 'chat-sidebar' },
                     __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
                         'div',
-                        { className: 'layer w-100' },
+                        { className: 'layers h-100' },
                         __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
                             'div',
-                            { className: 'peers fxw-nw jc-sb ai-c pY-20 pX-30 bgc-white' },
-                            __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                'div',
-                                { className: 'peers ai-c' },
-                                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
+                            { className: 'bdB layer w-100' },
+                            __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('input', { type: 'text', placeholder: 'Search contacts...', name: 'chatSearch', className: 'form-constrol p-15 bdrs-0 w-100 bdw-0' })
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
+                            'div',
+                            { className: 'layer w-100 fxg-1 scrollable pos-r ps' },
+                            this.state.users.map(function (user, i) {
+                                return __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
                                     'div',
-                                    { className: 'peer mR-20' },
-                                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('img', { src: 'https://randomuser.me/api/portraits/men/12.jpg', className: 'w-3r h-3r bdrs-50p' })
-                                ),
-                                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                    'div',
-                                    { className: 'peer' },
+                                    { className: 'peers fxw-nw ai-c p-20 bdB bgc-white bgcH-grey-50 cur-p', key: i },
                                     __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                        'h6',
-                                        { className: 'lh-1 mB-0' },
-                                        'John Doe'
+                                        'div',
+                                        { className: 'peer' },
+                                        __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('img', { src: '/' + user.user_info.images, alt: '', className: 'w-3r h-3r bdrs-50p' })
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
+                                        'div',
+                                        { className: 'peer peer-greed pL-20' },
+                                        __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
+                                            'h6',
+                                            { className: 'mB-0 lh-1 fw-400' },
+                                            user.name
+                                        ),
+                                        __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
+                                            'small',
+                                            { className: 'lh-1 c-green-500' },
+                                            'Online'
+                                        )
                                     )
-                                )
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                'div',
-                                { className: 'peers' },
-                                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                    'a',
-                                    { href: '', className: 'peer td-n c-grey-900 cH-blue-500 fsz-md mR-30', title: '' },
-                                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('i', { className: 'ti-video-camera' })
-                                ),
-                                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                    'a',
-                                    { href: '', className: 'peer td-n c-grey-900 cH-blue-500 fsz-md mR-30', title: '' },
-                                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('i', { className: 'ti-headphone' })
-                                ),
-                                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                    'a',
-                                    { href: '', className: 'peer td-n c-grey-900 cH-blue-500 fsz-md', title: '' },
-                                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('i', { className: 'ti-more' })
-                                )
-                            )
+                                );
+                            })
                         )
-                    ),
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
+                    'div',
+                    { className: 'peer peer-greed' },
                     __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
                         'div',
-                        { className: 'layer w-100 fxg-1 bgc-grey-200 scrollable pos-r ps' },
+                        { className: 'layers h-100 mx-h-500 w-90' },
                         __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
                             'div',
-                            { className: 'p-20 gapY-15' },
+                            { className: 'layer w-100' },
                             __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
                                 'div',
-                                { className: 'peers fxw-nw' },
+                                { className: 'peers fxw-nw jc-sb ai-c pY-20 pX-30 bgc-white' },
                                 __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
                                     'div',
-                                    { className: 'peer mR-20' },
-                                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('img', { className: 'w-2r bdrs-50p', src: 'https://randomuser.me/api/portraits/men/11.jpg', alt: '' })
-                                ),
-                                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                    'div',
-                                    { className: 'peer peer-greed' },
+                                    { className: 'peers ai-c' },
                                     __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
                                         'div',
-                                        { className: 'layers ai-fs gapY-5' },
+                                        { className: 'peer mR-20' },
+                                        __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('img', { src: 'https://randomuser.me/api/portraits/men/12.jpg', className: 'w-3r h-3r bdrs-50p' })
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
+                                        'div',
+                                        { className: 'peer' },
                                         __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                            'div',
-                                            { className: 'layer' },
-                                            __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                                'div',
-                                                { className: 'peers fxw-nw ai-c pY-3 pX-10 bgc-white bdrs-2 lh-3/2' },
-                                                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                                    'div',
-                                                    { className: 'peer mR-10' },
-                                                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                                        'small',
-                                                        null,
-                                                        '10:00 AM'
-                                                    )
-                                                ),
-                                                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                                    'div',
-                                                    { className: 'peer-greed' },
-                                                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                                        'span',
-                                                        null,
-                                                        'Lorem Ipsum is simply dummy text of'
-                                                    )
-                                                )
-                                            )
-                                        ),
-                                        __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                            'div',
-                                            { className: 'layer' },
-                                            __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                                'div',
-                                                { className: 'peers fxw-nw ai-c pY-3 pX-10 bgc-white bdrs-2 lh-3/2' },
-                                                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                                    'div',
-                                                    { className: 'peer mR-10' },
-                                                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                                        'small',
-                                                        null,
-                                                        '10:00 AM'
-                                                    )
-                                                ),
-                                                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                                    'div',
-                                                    { className: 'peer-greed' },
-                                                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                                        'span',
-                                                        null,
-                                                        'the printing and typesetting industry.'
-                                                    )
-                                                )
-                                            )
-                                        ),
-                                        __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                            'div',
-                                            { className: 'layer' },
-                                            __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                                'div',
-                                                { className: 'peers fxw-nw ai-c pY-3 pX-10 bgc-white bdrs-2 lh-3/2' },
-                                                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                                    'div',
-                                                    { className: 'peer mR-10' },
-                                                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                                        'small',
-                                                        null,
-                                                        '10:00 AM'
-                                                    )
-                                                ),
-                                                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                                    'div',
-                                                    { className: 'peer-greed' },
-                                                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                                        'span',
-                                                        null,
-                                                        'Lorem Ipsum has been the industry\'s'
-                                                    )
-                                                )
-                                            )
+                                            'h6',
+                                            { className: 'lh-1 mB-0' },
+                                            'John Doe'
                                         )
                                     )
-                                )
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                'div',
-                                { className: 'peers fxw-nw ai-fe' },
-                                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                    'div',
-                                    { className: 'peer ord-1 mL-20' },
-                                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('img', { className: 'w-2r bdrs-50p', src: 'https://randomuser.me/api/portraits/men/12.jpg', alt: '' })
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
                                     'div',
-                                    { className: 'peer peer-greed ord-0' },
+                                    { className: 'peers' },
                                     __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                        'div',
-                                        { className: 'layers ai-fe gapY-10' },
-                                        __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                            'div',
-                                            { className: 'layer' },
-                                            __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                                'div',
-                                                { className: 'peers fxw-nw ai-c pY-3 pX-10 bgc-white bdrs-2 lh-3/2' },
-                                                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                                    'div',
-                                                    { className: 'peer mL-10 ord-1' },
-                                                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                                        'small',
-                                                        null,
-                                                        '10:00 AM'
-                                                    )
-                                                ),
-                                                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                                    'div',
-                                                    { className: 'peer-greed ord-0' },
-                                                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                                        'span',
-                                                        null,
-                                                        'Heloo'
-                                                    )
-                                                )
-                                            )
-                                        ),
-                                        __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                            'div',
-                                            { className: 'layer' },
-                                            __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                                'div',
-                                                { className: 'peers fxw-nw ai-c pY-3 pX-10 bgc-white bdrs-2 lh-3/2' },
-                                                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                                    'div',
-                                                    { className: 'peer mL-10 ord-1' },
-                                                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                                        'small',
-                                                        null,
-                                                        '10:00 AM'
-                                                    )
-                                                ),
-                                                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                                    'div',
-                                                    { className: 'peer-greed ord-0' },
-                                                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                                        'span',
-                                                        null,
-                                                        '??'
-                                                    )
-                                                )
-                                            )
-                                        )
+                                        'a',
+                                        { href: '', className: 'peer td-n c-grey-900 cH-blue-500 fsz-md mR-30', title: '' },
+                                        __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('i', { className: 'ti-video-camera' })
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
+                                        'a',
+                                        { href: '', className: 'peer td-n c-grey-900 cH-blue-500 fsz-md mR-30', title: '' },
+                                        __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('i', { className: 'ti-headphone' })
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
+                                        'a',
+                                        { href: '', className: 'peer td-n c-grey-900 cH-blue-500 fsz-md', title: '' },
+                                        __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('i', { className: 'ti-more' })
                                     )
                                 )
                             )
-                        )
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                        'div',
-                        { className: 'layer w-100' },
+                        ),
                         __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
                             'div',
-                            { className: 'p-20 bdT bgc-white' },
+                            { className: 'layer w-100 fxg-1 bgc-grey-200 scrollable pos-r ps' },
                             __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
                                 'div',
-                                { className: 'pos-r' },
-                                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('input', { type: 'text', name: 'message', onChange: this.handleFieldChange, value: this.state.message, onKeyPress: this.handleKeyPress, className: 'form-control bdrs-10em m-0', placeholder: 'Say something...' }),
+                                { className: 'p-20 gapY-15' },
+                                this.state.messages.map(function (mes, i) {
+                                    return mes.user_id == _this4.user.id ? __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
+                                        'div',
+                                        { className: 'peers fxw-nw ai-fe', key: i },
+                                        __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
+                                            'div',
+                                            { className: 'peer ord-1 mL-20' },
+                                            __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('img', { className: 'w-2r bdrs-50p', src: '/' + _this4.state.convesation.members[mes.user_id].user.user_info.images, alt: '' })
+                                        ),
+                                        __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
+                                            'div',
+                                            { className: 'peer peer-greed ord-0' },
+                                            __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
+                                                'div',
+                                                { className: 'layers ai-fe gapY-10' },
+                                                mes.message.map(function (ms, j) {
+                                                    return __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
+                                                        'div',
+                                                        { className: 'layer', key: j },
+                                                        __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
+                                                            'div',
+                                                            { className: 'peers fxw-nw ai-c pY-3 pX-10 bgc-white bdrs-2 lh-3/2' },
+                                                            __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
+                                                                'div',
+                                                                { className: 'peer-greed ord-0' },
+                                                                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
+                                                                    'span',
+                                                                    null,
+                                                                    ms.messages
+                                                                )
+                                                            )
+                                                        )
+                                                    );
+                                                })
+                                            )
+                                        )
+                                    ) : __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
+                                        'div',
+                                        { className: 'peers fxw-nw', key: i },
+                                        __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
+                                            'div',
+                                            { className: 'peer mR-20' },
+                                            __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('img', { className: 'w-2r bdrs-50p', src: '/' + _this4.state.convesation.members[mes.user_id].user.user_info.images, alt: '' })
+                                        ),
+                                        __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
+                                            'div',
+                                            { className: 'peer peer-greed' },
+                                            __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
+                                                'div',
+                                                { className: 'layers ai-fs gapY-5' },
+                                                mes.message.map(function (ms, j) {
+                                                    return __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
+                                                        'div',
+                                                        { className: 'layer', key: j },
+                                                        __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
+                                                            'div',
+                                                            { className: 'peers fxw-nw ai-c pY-3 pX-10 bgc-white bdrs-2 lh-3/2' },
+                                                            __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
+                                                                'div',
+                                                                { className: 'peer-greed' },
+                                                                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
+                                                                    'span',
+                                                                    null,
+                                                                    ms.messages
+                                                                )
+                                                            )
+                                                        )
+                                                    );
+                                                })
+                                            )
+                                        )
+                                    );
+                                })
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('div', { style: { float: "left", clear: "both" },
+                                ref: function ref(el) {
+                                    _this4.messagesEnd = el;
+                                } })
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
+                            'div',
+                            { className: 'layer w-100' },
+                            __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
+                                'div',
+                                { className: 'p-20 bdT bgc-white' },
                                 __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                    'button',
-                                    { type: 'button', className: 'btn btn-primary bdrs-50p w-2r p-0 h-2r pos-a r-1 t-2' },
-                                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('i', { className: 'fa fa-paper-plane-o' })
+                                    'div',
+                                    { className: 'pos-r' },
+                                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('input', { type: 'text', name: 'message', onChange: this.handleFieldChange, value: this.state.message, onKeyPress: this.handleKeyPress, className: 'form-control bdrs-10em m-0', placeholder: 'Say something...' }),
+                                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
+                                        'button',
+                                        { type: 'button', className: 'btn btn-primary bdrs-50p w-2r p-0 h-2r pos-a r-1 t-2' },
+                                        __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('i', { className: 'fa fa-paper-plane-o' })
+                                    )
                                 )
                             )
                         )

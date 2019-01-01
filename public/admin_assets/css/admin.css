@@ -14620,6 +14620,19 @@ a.text-dark:focus {
   width: 280px;
 }
 
+.mL-10 {
+  margin-left: 10px !important;
+}
+
+.mx-h-500 {
+  max-height: 500px !important;
+  min-height: 500px !important;
+}
+
+.w-90 {
+  width: 90%;
+}
+
 .w-100-280 {
   width: calc(100% - 280px);
 }

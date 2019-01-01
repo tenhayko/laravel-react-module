@@ -19,5 +19,6 @@ Route::prefix('chat')->group(function() {
 });
 Route::prefix('admin')->group(function() {
     Route::get('/chat', 'MessageController@index')->name('chat');
+    Route::get('user/list', 'UserController@getList');
 });
 Route::post('/pusher/auth', 'ChatController@authenticate');
