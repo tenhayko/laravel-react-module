@@ -30,6 +30,7 @@ https://github.com/froala/react-froala-wysiwyg/issues/71
 -https://codepen.io/adamaoc/pen/GoKZKE
 
 ##chat
+https://pusher.com/docs/client_api_guide/client_presence_channels -- user online
 https://pusher.com/tutorials/chat-laravel/
 https://www.youtube.com/watch?v=5pnsloZzYQM
 https://github.com/AfikDeri/laravel-react-webrtc-video-chat
