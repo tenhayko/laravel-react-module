@@ -79407,7 +79407,7 @@ function load() {
 
 	// If debug isn't set in LS, and we're in Electron, try to load $DEBUG
 	if (!r && typeof process !== 'undefined' && 'env' in process) {
-		r = Object({"MIX_PUSHER_APP_CLUSTER":"ap2","MIX_PUSHER_APP_KEY":"b7a1e4b0955d704d953c","NODE_ENV":"development"}).DEBUG;
+		r = Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"}).DEBUG;
 	}
 
 	return r;
