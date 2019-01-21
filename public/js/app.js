@@ -80645,8 +80645,10 @@ var Messages = function (_Component) {
     }, {
         key: 'sendMessage',
         value: function sendMessage() {
-            this.addMessage(this.state.message);
-            this.setState({ message: '' });
+            if (this.state.message.trim().length) {
+                this.addMessage(this.state.message);
+                this.setState({ message: '' });
+            }
         }
     }, {
         key: 'addMessage',
@@ -80687,6 +80689,11 @@ var Messages = function (_Component) {
             this.setState(_defineProperty({}, event.target.name, event.target.value));
         }
     }, {
+        key: 'handleConversation',
+        value: function handleConversation(e, user) {
+            console.log(user);
+        }
+    }, {
         key: 'render',
         value: function render() {
             var _this4 = this;
@@ -80711,7 +80718,9 @@ var Messages = function (_Component) {
                             this.state.users.map(function (user, i) {
                                 return __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
                                     'div',
-                                    { className: 'peers fxw-nw ai-c p-20 bdB bgc-white bgcH-grey-50 cur-p', key: i },
+                                    { onClick: function onClick(e) {
+                                            return _this4.handleConversation(e, user);
+                                        }, className: 'peers fxw-nw ai-c p-20 bdB bgc-white bgcH-grey-50 cur-p', key: i },
                                     __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
                                         'div',
                                         { className: 'peer' },
