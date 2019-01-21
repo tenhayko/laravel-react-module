@@ -3,12 +3,6 @@ import Pusher from 'pusher-js';
 import React, { Component } from 'react';
 
 const APP_KEY = 'b7a1e4b0955d704d953c';
-function NumberList(props) {
-    return (
-      <ul>abc</ul>
-    );
-  }
-  
 class Messages extends Component {
     constructor(props) {
         super(props);

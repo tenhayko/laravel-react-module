@@ -80534,13 +80534,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 var APP_KEY = 'b7a1e4b0955d704d953c';
-function NumberList(props) {
-    return __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-        'ul',
-        null,
-        'abc'
-    );
-}
 
 var Messages = function (_Component) {
     _inherits(Messages, _Component);

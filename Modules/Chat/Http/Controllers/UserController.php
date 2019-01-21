@@ -6,6 +6,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -15,6 +16,7 @@ class UserController extends Controller
      */
     public function getList()
     {
-        return User::with('userInfo')->get();
+        $user_id = Auth::guard('web')->user()->id;
+        return User::with(['userInfo','conversationUser'])->where('id','<>',$user_id)->get();
     }
 }
