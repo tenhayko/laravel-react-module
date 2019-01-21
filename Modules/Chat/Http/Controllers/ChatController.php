@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 class ChatController extends Controller
 {
     /**
+     * @author: tenhayko
      * Display a listing of the resource.
      * @return Response
      */
@@ -23,7 +24,7 @@ class ChatController extends Controller
     }
 
     /**
-     * 
+     * @author: tenhayko
      */
     public function chat()
     {
@@ -31,15 +32,32 @@ class ChatController extends Controller
     }
 
     /**
-     * 
+     *  @author: tenhayko
      */
     public function fetchMessages()
     {
-        $conversation = Conversation::with(['member'=>function($query){
-            $query->with(['user'=>function($q){
-                $q->with('userInfo');
-            }]);
-        }])->first();
+        $conversation = $this->getMessage();
+    }
+
+    /**
+     * @author: tenhayko
+     * Get message of conversation
+     */
+    public function getMessage($conversation_id = false)
+    {
+        if($conversation_id){
+            Conversation::with(['member'=>function($query){
+                $query->with(['user'=>function($q){
+                    $q->with('userInfo');
+                }]);
+            }])->whereId($conversation_id)->first();
+        }else{
+            Conversation::with(['member'=>function($query){
+                $query->with(['user'=>function($q){
+                    $q->with('userInfo');
+                }]);
+            }])->first();
+        }
         $conversation->members = $conversation->member->keyBy('id');
         unset($conversation->member);
         $message = [];
@@ -63,7 +81,21 @@ class ChatController extends Controller
     }
 
     /**
-     * 
+     * @author: tenhayko
+     * Get or Create conversation
+     */
+    public function getConversation(Request $request)
+    {
+        if($request->conversation_id)
+        {
+            return $this->getMessage($request->conversation_id);
+        }else{
+            // echo 'create new conversation';
+        }
+    }
+
+    /**
+     * @author: tenhayko
      */
     public function sendMessage(Request $request)
     {
@@ -85,7 +117,7 @@ class ChatController extends Controller
     }
 
     /**
-    * 
+    * @author: tenhayko
     */
     public function authenticate(Request $request)
     {

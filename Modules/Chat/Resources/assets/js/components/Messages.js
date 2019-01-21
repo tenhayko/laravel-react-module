@@ -124,7 +124,17 @@ class Messages extends Component {
         });
     }
     handleConversation(e,user) {
-        console.log(user);
+        if(user.conversation_user != undefined) {
+            if(user.conversation_user.conversation_id != this.state.convesation.id){
+                axios.post('/chat/conversation', {conversation_id : user.conversation_user.conversation_id}).then(response => {
+                    // console.log(response.data);
+                });
+            }
+        }else{
+            axios.post('/chat/conversation').then(response => {
+                // console.log(response.data);
+            });
+        }
     }
     render () {
         return (
