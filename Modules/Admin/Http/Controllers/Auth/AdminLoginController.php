@@ -44,17 +44,18 @@ class AdminLoginController extends Controller
     /**
      * You can overwrite the login method
      */
-    // public function login(Request $req)
-    // {
-    //     $this->validate($req,[
-    //         'email'=>'required|email',
-    //         'password'=>'required|min:6',
-    //     ]);
-    //     if (Auth::guard('admin')->attempt(['email'=>$req->email, 'password'=>$req->password], $req->remember)) {
-    //         return redirect()->intended(route('admin'));
-    //     }
-    //     return redirect()->back()->withInput($req->only('email', 'remember'));
-    // }
+    public function login(Request $req)
+    {
+        $this->validate($req,[
+            'email'=>'required|email',
+            'password'=>'required|min:6',
+        ]);
+        if (Auth::guard('admin')->attempt(['email'=>$req->email, 'password'=>$req->password], $req->remember)) {
+            Auth::login(Auth::guard('admin')->user()->user);
+            return redirect()->intended(route('admin.dashboard'));
+        }
+        return redirect()->back()->withInput($req->only('email', 'remember'));
+    }
     public function logout()
     {
         Auth::guard('admin')->logout();

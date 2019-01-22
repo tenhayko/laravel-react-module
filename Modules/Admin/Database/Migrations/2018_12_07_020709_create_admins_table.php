@@ -19,6 +19,8 @@ class CreateAdminsTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->rememberToken();
             $table->timestamps();
         });

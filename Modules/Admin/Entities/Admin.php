@@ -2,6 +2,7 @@
 
 namespace Modules\Admin\Entities;
 
+use App\User;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -27,4 +28,8 @@ class Admin extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
