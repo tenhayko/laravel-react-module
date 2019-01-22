@@ -60,6 +60,8 @@ class Messages extends Component {
             this.channel.bind(eventLs, function(data) {
                 this.pushMessage(data);
             }.bind(this));
+        }).catch(error => {
+            console.log(error.response.data.message);
         });
     }
     componentWillMount() {

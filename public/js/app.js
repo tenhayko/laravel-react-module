@@ -80609,6 +80609,8 @@ var Messages = function (_Component) {
                 _this3.channel.bind(eventLs, function (data) {
                     this.pushMessage(data);
                 }.bind(_this3));
+            }).catch(function (error) {
+                console.log(error.response.data.message);
             });
         }
     }, {

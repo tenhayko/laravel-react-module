@@ -37,6 +37,9 @@ class ChatController extends Controller
     public function fetchMessages()
     {
         $conversation = $this->getMessage();
+        if($conversation)
+        return $conversation;
+        return response()->json(['message'=>'Not found','status' => 404], 404);
     }
 
     /**
@@ -46,37 +49,39 @@ class ChatController extends Controller
     public function getMessage($conversation_id = false)
     {
         if($conversation_id){
-            Conversation::with(['member'=>function($query){
+            $conversation = Conversation::with(['member'=>function($query){
                 $query->with(['user'=>function($q){
                     $q->with('userInfo');
                 }]);
             }])->whereId($conversation_id)->first();
         }else{
-            Conversation::with(['member'=>function($query){
+            $conversation = Conversation::with(['member'=>function($query){
                 $query->with(['user'=>function($q){
                     $q->with('userInfo');
                 }]);
             }])->first();
         }
-        $conversation->members = $conversation->member->keyBy('id');
-        unset($conversation->member);
-        $message = [];
-        $user_id = false;
-        $i = 0;
-        foreach ($conversation->messages as $key => $value) {
-            if ($user_id && $user_id == $value->user_id) {
-                $message [$i]['user_id'] = $value->user_id;
-                $message [$i]['message'][] = $value->toArray();
-            }else{
-                if(array_key_exists($i,$message))
-                $i++;
-                $user_id = $value->user_id;
-                $message [$i]['user_id'] = $value->user_id;
-                $message [$i]['message'][] = $value->toArray();
+        if($conversation){
+            $conversation->members = $conversation->member->keyBy('id');
+            unset($conversation->member);
+            $message = [];
+            $user_id = false;
+            $i = 0;
+            foreach ($conversation->messages as $key => $value) {
+                if ($user_id && $user_id == $value->user_id) {
+                    $message [$i]['user_id'] = $value->user_id;
+                    $message [$i]['message'][] = $value->toArray();
+                }else{
+                    if(array_key_exists($i,$message))
+                    $i++;
+                    $user_id = $value->user_id;
+                    $message [$i]['user_id'] = $value->user_id;
+                    $message [$i]['message'][] = $value->toArray();
+                }
             }
+            unset($conversation->messages);
+            $conversation->messages = $message;
         }
-        unset($conversation->messages);
-        $conversation->messages = $message;
         return $conversation;
     }
 
