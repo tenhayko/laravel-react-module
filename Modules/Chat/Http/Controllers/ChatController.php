@@ -3,13 +3,14 @@
 namespace Modules\Chat\Http\Controllers;
 
 use App\User;
+use Carbon\Carbon;
 use \Pusher\Pusher;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\Chat\Entities\Message;
-use Modules\Chat\Entities\Conversation;
 use Illuminate\Support\Facades\Auth;
+use Modules\Chat\Entities\Conversation;
 
 class ChatController extends Controller
 {
@@ -95,8 +96,29 @@ class ChatController extends Controller
         {
             return $this->getMessage($request->conversation_id);
         }else{
-            // echo 'create new conversation';
+            $user_id = Auth::guard('web')->user()->id;
+            $friend_id = $request->user_id;
+            if($friend_id)
+            {
+                $conversation           = new Conversation;
+                $conversation->type     = 0;
+                $conversation->status   = 1;
+                $conversation->title    = 'title';
+                $conversation->save();
+                $conversation->member()->create([
+                    'user_id' => $user_id
+                ]);
+                $conversation->member()->create([
+                    'user_id' => $friend_id
+                ]);
+                $conversation->user()->create([
+                    'user_one' => $user_id,
+                    'user_two' => $friend_id
+                ]);
+                return $this->getMessage($conversation->id);
+            }
         }
+        return response()->json(['message'=>'Not found','status' => 404], 404);
     }
 
     /**

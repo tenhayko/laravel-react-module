@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class MBOConversation extends Model
 {
-    protected $fillable = [];
+    protected $fillable = ['user_id','conversation_id'];
 
     public function user()
     {

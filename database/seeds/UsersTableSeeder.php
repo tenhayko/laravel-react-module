@@ -23,6 +23,12 @@ class UsersTableSeeder extends Seeder
                 'type' => 1,
                 'email' => 'tenhayko2@gmail.com',
                 'password' => bcrypt('123456'),
+            ],
+            [
+                'name' => 'Garp',
+                'type' => 1,
+                'email' => 'tenhayko3@gmail.com',
+                'password' => bcrypt('123456'),
             ]
         ]);
         DB::table('user_infos')->insert([
@@ -33,6 +39,10 @@ class UsersTableSeeder extends Seeder
             [
                 'images' => 'images/2.jpg',
                 'user_id' => 2
+            ],
+            [
+                'images' => 'images/3.gif',
+                'user_id' => 3
             ]
         ]);
         DB::table('admins')->insert([
@@ -46,6 +56,12 @@ class UsersTableSeeder extends Seeder
                 'name' => 'Ace',
                 'user_id'=>2,
                 'email' => 'tenhayko2@gmail.com',
+                'password' => bcrypt('123456'),
+            ],
+            [
+                'name' => 'Garp',
+                'user_id'=>3,
+                'email' => 'tenhayko3@gmail.com',
                 'password' => bcrypt('123456'),
             ],
         ]);

@@ -80696,12 +80696,16 @@ var Messages = function (_Component) {
             if (user.conversation_user != undefined) {
                 if (user.conversation_user.conversation_id != this.state.convesation.id) {
                     __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('/chat/conversation', { conversation_id: user.conversation_user.conversation_id }).then(function (response) {
-                        // console.log(response.data);
+                        console.log(response.data);
+                    }).catch(function (error) {
+                        console.log(error.response.data.message);
                     });
                 }
             } else {
-                __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('/chat/conversation').then(function (response) {
-                    // console.log(response.data);
+                __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('/chat/conversation', { user_id: user.id }).then(function (response) {
+                    console.log(response.data);
+                }).catch(function (error) {
+                    console.log(error.response.data.message);
                 });
             }
         }
