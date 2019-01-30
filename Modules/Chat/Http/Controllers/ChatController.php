@@ -115,7 +115,7 @@ class ChatController extends Controller
                     'user_one' => $user_id,
                     'user_two' => $friend_id
                 ]);
-                return $this->getMessage($conversation->id);
+                return response()->json(['conversation'=>$conversation->user,'message'=>$this->getMessage($conversation->id),'status' => 200], 200);
             }
         }
         return response()->json(['message'=>'Not found','status' => 404], 404);

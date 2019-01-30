@@ -80693,17 +80693,19 @@ var Messages = function (_Component) {
     }, {
         key: 'handleConversation',
         value: function handleConversation(e, user) {
+            console.log(user);
             if (user.conversation_user != undefined) {
                 if (user.conversation_user.conversation_id != this.state.convesation.id) {
                     __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('/chat/conversation', { conversation_id: user.conversation_user.conversation_id }).then(function (response) {
-                        console.log(response.data);
+                        // chua xu ly
                     }).catch(function (error) {
                         console.log(error.response.data.message);
                     });
                 }
             } else {
                 __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('/chat/conversation', { user_id: user.id }).then(function (response) {
-                    console.log(response.data);
+                    user.conversation_user = response.data.conversation;
+                    // chua xu ly
                 }).catch(function (error) {
                     console.log(error.response.data.message);
                 });

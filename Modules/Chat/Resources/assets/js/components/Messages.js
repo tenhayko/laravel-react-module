@@ -126,17 +126,19 @@ class Messages extends Component {
         });
     }
     handleConversation(e,user) {
+        console.log(user);
         if(user.conversation_user != undefined) {
             if(user.conversation_user.conversation_id != this.state.convesation.id){
                 axios.post('/chat/conversation', {conversation_id : user.conversation_user.conversation_id}).then(response => {
-                    console.log(response.data);
+                    // chua xu ly
                 }).catch(error => {
                     console.log(error.response.data.message);
                 });
             }
         }else{
             axios.post('/chat/conversation', {user_id : user.id}).then(response => {
-                console.log(response.data);
+                user.conversation_user = response.data.conversation;
+                // chua xu ly
             }).catch(error => {
                 console.log(error.response.data.message);
             });
