@@ -80693,12 +80693,18 @@ var Messages = function (_Component) {
     }, {
         key: 'handleConversation',
         value: function handleConversation(e, user) {
+            var _this4 = this;
+
             console.log(user);
             if (user.conversation_user != undefined) {
                 if (user.conversation_user.conversation_id != this.state.convesation.id) {
                     __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('/chat/conversation', { conversation_id: user.conversation_user.conversation_id }).then(function (response) {
                         // chua xu ly
                         console.log(response.data);
+                        _this4.setState({
+                            convesation: response.data,
+                            messages: response.data.messages
+                        });
                     }).catch(function (error) {
                         console.log(error.response.data.message);
                     });
@@ -80715,7 +80721,7 @@ var Messages = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
-            var _this4 = this;
+            var _this5 = this;
 
             return __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
                 'div',
@@ -80738,7 +80744,7 @@ var Messages = function (_Component) {
                                 return __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
                                     'div',
                                     { onClick: function onClick(e) {
-                                            return _this4.handleConversation(e, user);
+                                            return _this5.handleConversation(e, user);
                                         }, className: 'peers fxw-nw ai-c p-20 bdB bgc-white bgcH-grey-50 cur-p', key: i },
                                     __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
                                         'div',
@@ -80822,13 +80828,13 @@ var Messages = function (_Component) {
                                 'div',
                                 { className: 'p-20 gapY-15' },
                                 this.state.messages.map(function (mes, i) {
-                                    return mes.user_id == _this4.user.id ? __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
+                                    return mes.user_id == _this5.user.id ? __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
                                         'div',
                                         { className: 'peers fxw-nw ai-fe', key: i },
                                         __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
                                             'div',
                                             { className: 'peer ord-1 mL-20' },
-                                            __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('img', { className: 'w-2r bdrs-50p', src: '/' + _this4.state.convesation.members[mes.user_id].user.user_info.images, alt: '' })
+                                            __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('img', { className: 'w-2r bdrs-50p', src: '/' + _this5.state.convesation.members[mes.user_id].user.user_info.images, alt: '' })
                                         ),
                                         __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
                                             'div',
@@ -80863,7 +80869,7 @@ var Messages = function (_Component) {
                                         __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
                                             'div',
                                             { className: 'peer mR-20' },
-                                            __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('img', { className: 'w-2r bdrs-50p', src: '/' + _this4.state.convesation.members[mes.user_id].user.user_info.images, alt: '' })
+                                            __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('img', { className: 'w-2r bdrs-50p', src: '/' + _this5.state.convesation.members[mes.user_id].user.user_info.images, alt: '' })
                                         ),
                                         __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
                                             'div',
@@ -80897,7 +80903,7 @@ var Messages = function (_Component) {
                             ),
                             __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('div', { style: { float: "left", clear: "both" },
                                 ref: function ref(el) {
-                                    _this4.messagesEnd = el;
+                                    _this5.messagesEnd = el;
                                 } })
                         ),
                         __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(

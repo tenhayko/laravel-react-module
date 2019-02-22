@@ -132,6 +132,10 @@ class Messages extends Component {
                 axios.post('/chat/conversation', {conversation_id : user.conversation_user.conversation_id}).then(response => {
                     // chua xu ly
                     console.log(response.data);
+                    this.setState({ 
+                        convesation: response.data,
+                        messages: response.data.messages,
+                    });
                 }).catch(error => {
                     console.log(error.response.data.message);
                 });
