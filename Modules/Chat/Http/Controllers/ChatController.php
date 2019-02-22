@@ -63,7 +63,7 @@ class ChatController extends Controller
             }])->first();
         }
         if($conversation){
-            $conversation->members = $conversation->member->keyBy('id');
+            $conversation->members = $conversation->member->keyBy('user_id');
             unset($conversation->member);
             $message = [];
             $user_id = false;

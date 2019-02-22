@@ -80605,6 +80605,8 @@ var Messages = function (_Component) {
                     convesation: response.data,
                     messages: response.data.messages
                 });
+                console.log(response.data);
+                console.log(_this3.state.convesation.members);
                 var eventLs = 'new-message-' + _this3.state.convesation.id;
                 _this3.channel.bind(eventLs, function (data) {
                     this.pushMessage(data);
@@ -80705,6 +80707,7 @@ var Messages = function (_Component) {
                             convesation: response.data,
                             messages: response.data.messages
                         });
+                        console.log(_this4.state.convesation.members);
                     }).catch(function (error) {
                         console.log(error.response.data.message);
                     });

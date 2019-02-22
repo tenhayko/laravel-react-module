@@ -56,6 +56,8 @@ class Messages extends Component {
                 convesation: response.data,
                 messages: response.data.messages,
             });
+            console.log(response.data);
+            console.log(this.state.convesation.members);
             let eventLs = 'new-message-'+this.state.convesation.id
             this.channel.bind(eventLs, function(data) {
                 this.pushMessage(data);
@@ -136,6 +138,7 @@ class Messages extends Component {
                         convesation: response.data,
                         messages: response.data.messages,
                     });
+                    console.log(this.state.convesation.members);
                 }).catch(error => {
                     console.log(error.response.data.message);
                 });
