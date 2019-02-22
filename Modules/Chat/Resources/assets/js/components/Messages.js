@@ -131,6 +131,7 @@ class Messages extends Component {
             if(user.conversation_user.conversation_id != this.state.convesation.id){
                 axios.post('/chat/conversation', {conversation_id : user.conversation_user.conversation_id}).then(response => {
                     // chua xu ly
+                    console.log(response.data);
                 }).catch(error => {
                     console.log(error.response.data.message);
                 });

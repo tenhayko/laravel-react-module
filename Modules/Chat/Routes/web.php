@@ -23,3 +23,6 @@ Route::prefix('admin')->group(function() {
     Route::get('user/list', 'UserController@getList');
 });
 Route::post('/pusher/auth', 'ChatController@authenticate');
+Route::get('/text', function(){
+    echo '<textarea rows="4" cols="50" value="&#13;abc"></textarea>';
+});
