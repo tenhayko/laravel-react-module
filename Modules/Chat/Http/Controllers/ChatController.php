@@ -56,11 +56,12 @@ class ChatController extends Controller
                 }]);
             }])->whereId($conversation_id)->first();
         }else{
-            $conversation = Conversation::with(['member'=>function($query){
+            $user_id = Auth::guard('web')->user()->id;
+            $conversation = Conversation::select('conversations.*')->with(['member'=>function($query){
                 $query->with(['user'=>function($q){
                     $q->with('userInfo');
                 }]);
-            }])->first();
+            }])->join('m_b_o_conversations', 'conversations.id', '=', 'm_b_o_conversations.conversation_id')->where('m_b_o_conversations.user_id',$user_id)->first();
         }
         if($conversation){
             $conversation->members = $conversation->member->keyBy('user_id');
