@@ -1,1 +1,2 @@
-Cần xử lý trường hợp bind event của pusher cho user_id, mới sử lý cho conversation_id
+-Cần xử lý trường hợp thay đổi ảnh - title của conversation
+-Cần xử lý trường hợp có nhiều conversation cùng lúc hoạt động
