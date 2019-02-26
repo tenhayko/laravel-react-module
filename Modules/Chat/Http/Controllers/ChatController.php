@@ -35,9 +35,9 @@ class ChatController extends Controller
     /**
      *  @author: tenhayko
      */
-    public function fetchMessages()
+    public function fetchMessages($conversation_id = false)
     {
-        $conversation = $this->getMessage();
+        $conversation = $this->getMessage($conversation_id);
         if($conversation)
         return $conversation;
         return response()->json(['message'=>'Not found','status' => 404], 404);

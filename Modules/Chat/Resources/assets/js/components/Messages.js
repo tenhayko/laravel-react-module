@@ -9,7 +9,7 @@ class Messages extends Component {
         this.state = {
             convesation: [],
             messages:[],
-            cailon:[],
+            lisEventLs:[],
             users:[],
             message: ''
         };
@@ -28,25 +28,40 @@ class Messages extends Component {
             });
         });
     }
+    getConversation(conversation_id)
+    {
+        axios.get(`/chat/messages/${conversation_id}`).then(response => {;
+            this.setState({ 
+                convesation: response.data,
+                messages: response.data.messages,
+            });
+        }).catch(error => {
+            console.log(error.response.data.message);
+        });
+    }
     pushMessage(data) {
-        if (data.user_id != this.user.id) {
-            let lats = this.state.messages[this.state.messages.length-1];
-            let newms = {
-                user_id : data.user_id,
-                message : [{messages:data.messages}]
-            };
-            let ms = {
-                messages:data.messages
-            }
-            if (this.state.messages.length && lats.user_id == data.user_id) {
-                this.state.messages[this.state.messages.length-1].message.push(ms);
-                this.setState({ 
-                    messages: this.state.messages
-                });
-            }else{
-                this.setState({ 
-                    messages: this.state.messages.concat([newms])
-                });
+        if(this.state.convesation.id != data.conversation_id){
+            this.getConversation(data.conversation_id);
+        }else{
+            if (data.user_id != this.user.id) {
+                let lats = this.state.messages[this.state.messages.length-1];
+                let newms = {
+                    user_id : data.user_id,
+                    message : [{messages:data.messages}]
+                };
+                let ms = {
+                    messages:data.messages
+                }
+                if (this.state.messages.length && lats.user_id == data.user_id) {
+                    this.state.messages[this.state.messages.length-1].message.push(ms);
+                    this.setState({ 
+                        messages: this.state.messages
+                    });
+                }else{
+                    this.setState({ 
+                        messages: this.state.messages.concat([newms])
+                    });
+                }
             }
         }
     }
@@ -56,10 +71,8 @@ class Messages extends Component {
                 convesation: response.data,
                 messages: response.data.messages,
             });
-            console.log(response.data);
-            console.log(this.state.convesation.members);
-            let eventLs = 'new-message-'+this.state.convesation.id
-            this.channel.bind(eventLs, function(data) {
+            this.state.lisEventLs[this.state.convesation.id] = 'new-message-'+this.state.convesation.id;
+            this.channel.bind(this.state.lisEventLs[this.state.convesation.id], function(data) {
                 this.pushMessage(data);
             }.bind(this));
         }).catch(error => {
@@ -138,6 +151,12 @@ class Messages extends Component {
                         convesation: response.data,
                         messages: response.data.messages,
                     });
+                    if(this.state.lisEventLs[this.state.convesation.id] === undefined){
+                        this.state.lisEventLs[this.state.convesation.id] = 'new-message-'+this.state.convesation.id;
+                        this.channel.bind(this.state.lisEventLs[this.state.convesation.id], function(data) {
+                            this.pushMessage(data);
+                        }.bind(this));
+                    }
                     console.log(this.state.convesation.members);
                 }).catch(error => {
                     console.log(error.response.data.message);

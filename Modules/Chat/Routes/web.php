@@ -14,7 +14,7 @@
 Route::prefix('chat')->group(function() {
     Route::get('/', 'ChatController@index');
     Route::get('/chat', 'ChatController@chat');
-    Route::get('messages', 'ChatController@fetchMessages');
+    Route::get('messages/{conversation_id?}', 'ChatController@fetchMessages');
     Route::post('messages', 'ChatController@sendMessage');
     Route::post('conversation', 'ChatController@getConversation');
 });
