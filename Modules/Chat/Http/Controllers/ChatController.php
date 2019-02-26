@@ -138,9 +138,11 @@ class ChatController extends Controller
             'cluster' => 'ap2',
             'encrypted' => true
         ]);
+        $conversation = Conversation::where('id',$request->input('conversation_id'))->first();
         $data['user_id'] = $user->id;
         $data['messages'] = $request->input('messages');
         $data['conversation_id'] = $request->input('conversation_id');
+        $data['conversation_user'] = $conversation->user;
         $userConversation = MBOConversation::where('conversation_id', $request->input('conversation_id'))->whereNotIn('user_id',[$user->id])->get();
         if($userConversation){
             foreach($userConversation as $value){

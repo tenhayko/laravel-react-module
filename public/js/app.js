@@ -80660,6 +80660,7 @@ var Messages = function (_Component) {
             this.channel = this.pusher.subscribe('channel-chat');
             this.channel.bind('user-' + this.user.id, function (data) {
                 this.pushMessage(data);
+                this.state.users[data.user_id].conversation_user = data.conversation_user;
             }.bind(this));
         }
     }, {
@@ -80758,16 +80759,16 @@ var Messages = function (_Component) {
                         __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
                             'div',
                             { className: 'layer w-100 fxg-1 scrollable pos-r ps' },
-                            this.state.users.map(function (user, i) {
+                            Object.keys(this.state.users).map(function (user, i) {
                                 return __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
                                     'div',
                                     { onClick: function onClick(e) {
-                                            return _this6.handleConversation(e, user);
+                                            return _this6.handleConversation(e, _this6.state.users[user]);
                                         }, className: 'peers fxw-nw ai-c p-20 bdB bgc-white bgcH-grey-50 cur-p', key: i },
                                     __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
                                         'div',
                                         { className: 'peer' },
-                                        __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('img', { src: '/' + user.user_info.images, alt: '', className: 'w-3r h-3r bdrs-50p' })
+                                        __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('img', { src: '/' + _this6.state.users[user].user_info.images, alt: '', className: 'w-3r h-3r bdrs-50p' })
                                     ),
                                     __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
                                         'div',
@@ -80775,7 +80776,7 @@ var Messages = function (_Component) {
                                         __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
                                             'h6',
                                             { className: 'mB-0 lh-1 fw-400' },
-                                            user.name
+                                            _this6.state.users[user].name
                                         ),
                                         __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
                                             'small',

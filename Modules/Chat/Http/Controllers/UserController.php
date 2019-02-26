@@ -17,6 +17,6 @@ class UserController extends Controller
     public function getList()
     {
         $user_id = Auth::guard('web')->user()->id;
-        return User::with(['userInfo','conversationUser'])->where('id','<>',$user_id)->get();
+        return User::with(['userInfo','conversationUser'])->where('id','<>',$user_id)->get()->keyBy('id');
     }
 }

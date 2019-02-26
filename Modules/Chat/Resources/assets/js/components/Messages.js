@@ -97,6 +97,7 @@ class Messages extends Component {
         this.channel = this.pusher.subscribe('channel-chat');
         this.channel.bind(`user-${this.user.id}`, function(data) {
             this.pushMessage(data);
+            this.state.users[data.user_id].conversation_user = data.conversation_user;
         }.bind(this));
     }
     sendMessage() {
@@ -172,11 +173,11 @@ class Messages extends Component {
                             <input type="text" placeholder="Search contacts..." name="chatSearch" className="form-constrol p-15 bdrs-0 w-100 bdw-0"/>
                         </div>
                         <div className="layer w-100 fxg-1 scrollable pos-r ps">
-                            {this.state.users.map((user, i) => (
-                                <div onClick={(e)=>this.handleConversation(e,user)} className="peers fxw-nw ai-c p-20 bdB bgc-white bgcH-grey-50 cur-p" key={i}>
-                                    <div className="peer"><img src={ '/'+user.user_info.images } alt="" className="w-3r h-3r bdrs-50p"/></div>
+                            {Object.keys(this.state.users).map((user, i) => (
+                                <div onClick={(e)=>this.handleConversation(e,this.state.users[user])} className="peers fxw-nw ai-c p-20 bdB bgc-white bgcH-grey-50 cur-p" key={i}>
+                                    <div className="peer"><img src={ '/'+this.state.users[user].user_info.images } alt="" className="w-3r h-3r bdrs-50p"/></div>
                                     <div className="peer peer-greed pL-20">
-                                        <h6 className="mB-0 lh-1 fw-400">{ user.name }</h6><small className="lh-1 c-green-500">Online</small></div>
+                                        <h6 className="mB-0 lh-1 fw-400">{ this.state.users[user].name }</h6><small className="lh-1 c-green-500">Online</small></div>
                                 </div>
                             ))}
                         </div>
