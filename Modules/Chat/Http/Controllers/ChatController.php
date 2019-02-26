@@ -11,6 +11,7 @@ use Illuminate\Routing\Controller;
 use Modules\Chat\Entities\Message;
 use Illuminate\Support\Facades\Auth;
 use Modules\Chat\Entities\Conversation;
+use Modules\Chat\Entities\MBOConversation;
 
 class ChatController extends Controller
 {
@@ -140,7 +141,12 @@ class ChatController extends Controller
         $data['user_id'] = $user->id;
         $data['messages'] = $request->input('messages');
         $data['conversation_id'] = $request->input('conversation_id');
-        $pusher->trigger('channel-chat', 'new-message-'.$request->input('conversation_id'), $data);
+        $userConversation = MBOConversation::where('conversation_id', $request->input('conversation_id'))->whereNotIn('user_id',[$user->id])->get();
+        if($userConversation){
+            foreach($userConversation as $value){
+                $pusher->trigger('channel-chat', 'user-'.$value->user_id, $data);
+            }
+        }
         return ['status' => 'Message Sent!'];
     }
 

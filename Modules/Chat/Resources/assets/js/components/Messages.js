@@ -71,10 +71,6 @@ class Messages extends Component {
                 convesation: response.data,
                 messages: response.data.messages,
             });
-            this.state.lisEventLs[this.state.convesation.id] = 'new-message-'+this.state.convesation.id;
-            this.channel.bind(this.state.lisEventLs[this.state.convesation.id], function(data) {
-                this.pushMessage(data);
-            }.bind(this));
         }).catch(error => {
             console.log(error.response.data.message);
         });
@@ -99,6 +95,9 @@ class Messages extends Component {
             forceTLS: true
         });
         this.channel = this.pusher.subscribe('channel-chat');
+        this.channel.bind(`user-${this.user.id}`, function(data) {
+            this.pushMessage(data);
+        }.bind(this));
     }
     sendMessage() {
         if(this.state.message.trim().length) {
@@ -141,23 +140,13 @@ class Messages extends Component {
         });
     }
     handleConversation(e,user) {
-        console.log(user);
         if(user.conversation_user != undefined) {
             if(user.conversation_user.conversation_id != this.state.convesation.id){
                 axios.post('/chat/conversation', {conversation_id : user.conversation_user.conversation_id}).then(response => {
-                    // chua xu ly
-                    console.log(response.data);
                     this.setState({ 
                         convesation: response.data,
                         messages: response.data.messages,
                     });
-                    if(this.state.lisEventLs[this.state.convesation.id] === undefined){
-                        this.state.lisEventLs[this.state.convesation.id] = 'new-message-'+this.state.convesation.id;
-                        this.channel.bind(this.state.lisEventLs[this.state.convesation.id], function(data) {
-                            this.pushMessage(data);
-                        }.bind(this));
-                    }
-                    console.log(this.state.convesation.members);
                 }).catch(error => {
                     console.log(error.response.data.message);
                 });
@@ -165,7 +154,10 @@ class Messages extends Component {
         }else{
             axios.post('/chat/conversation', {user_id : user.id}).then(response => {
                 user.conversation_user = response.data.conversation;
-                // chua xu ly
+                this.setState({ 
+                    convesation: response.data.message,
+                    messages: response.data.message.messages,
+                });
             }).catch(error => {
                 console.log(error.response.data.message);
             });

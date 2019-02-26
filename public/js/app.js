@@ -80624,10 +80624,6 @@ var Messages = function (_Component) {
                     convesation: response.data,
                     messages: response.data.messages
                 });
-                _this4.state.lisEventLs[_this4.state.convesation.id] = 'new-message-' + _this4.state.convesation.id;
-                _this4.channel.bind(_this4.state.lisEventLs[_this4.state.convesation.id], function (data) {
-                    this.pushMessage(data);
-                }.bind(_this4));
             }).catch(function (error) {
                 console.log(error.response.data.message);
             });
@@ -80662,6 +80658,9 @@ var Messages = function (_Component) {
                 forceTLS: true
             });
             this.channel = this.pusher.subscribe('channel-chat');
+            this.channel.bind('user-' + this.user.id, function (data) {
+                this.pushMessage(data);
+            }.bind(this));
         }
     }, {
         key: 'sendMessage',
@@ -80714,23 +80713,13 @@ var Messages = function (_Component) {
         value: function handleConversation(e, user) {
             var _this5 = this;
 
-            console.log(user);
             if (user.conversation_user != undefined) {
                 if (user.conversation_user.conversation_id != this.state.convesation.id) {
                     __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('/chat/conversation', { conversation_id: user.conversation_user.conversation_id }).then(function (response) {
-                        // chua xu ly
-                        console.log(response.data);
                         _this5.setState({
                             convesation: response.data,
                             messages: response.data.messages
                         });
-                        if (_this5.state.lisEventLs[_this5.state.convesation.id] === undefined) {
-                            _this5.state.lisEventLs[_this5.state.convesation.id] = 'new-message-' + _this5.state.convesation.id;
-                            _this5.channel.bind(_this5.state.lisEventLs[_this5.state.convesation.id], function (data) {
-                                this.pushMessage(data);
-                            }.bind(_this5));
-                        }
-                        console.log(_this5.state.convesation.members);
                     }).catch(function (error) {
                         console.log(error.response.data.message);
                     });
@@ -80738,7 +80727,10 @@ var Messages = function (_Component) {
             } else {
                 __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('/chat/conversation', { user_id: user.id }).then(function (response) {
                     user.conversation_user = response.data.conversation;
-                    // chua xu ly
+                    _this5.setState({
+                        convesation: response.data.message,
+                        messages: response.data.message.messages
+                    });
                 }).catch(function (error) {
                     console.log(error.response.data.message);
                 });
