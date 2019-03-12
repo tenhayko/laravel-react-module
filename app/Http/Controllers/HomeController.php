@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
@@ -13,7 +14,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        // $this->middleware('auth');
     }
 
     /**
@@ -29,10 +30,15 @@ class HomeController extends Controller
     {
         return view('test');
     }
-    public function upload(Request $requsest)
+    public function deleteImage()
     {
-        echo "<pre>";
-        print_r($requsest->all());
+        return response()->json(['message'=>'ok','status' => 200], 200);
+    }
+    public function upload(Request $request)
+    {
+        $path   = $request->file('file')->store('public/avatars');
+        $url    = Storage::url($path);
+        return response()->json(['secure_url'=>$url,'status' => 200], 200);
     }
     public function authenticate()
     {

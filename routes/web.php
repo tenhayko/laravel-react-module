@@ -20,6 +20,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('admin/test', 'HomeController@test')->name('test');
 Route::post('upload', 'HomeController@upload')->name('upload');
+Route::post('delete-image', 'HomeController@deleteImage')->name('deleteImage');
 // Route::get( '/{path?}', function(){
 //     return view('blog::index');
 // } )->where('path', '.*');

@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import ReactDOM from 'react-dom';
 
 // Require Editor JS files.
@@ -23,6 +24,17 @@ const config = {
             response = JSON.parse(response);
             editor.image.insert(response.secure_url, true, null, editor.image.get(), null)
             return false
+        },
+        'froalaEditor.image.removed': (e, editor, $img) => {
+            // delete image
+            console.log($img.attr('src'));
+            let data = {
+              image : $img.attr('src')
+            }
+            axios.post('/delete-image', data).then(response => {
+              // console.log(response.data);
+            });
+            return false
         }
     }
 }
@@ -41,7 +53,7 @@ class EditorComponent extends React.Component {
     this.setState({
       model: model
     });
-    console.log(model);
+    // console.log(model);
   }
 
   render () {
