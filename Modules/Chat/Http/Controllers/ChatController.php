@@ -16,6 +16,14 @@ use Modules\Chat\Entities\MBOConversation;
 class ChatController extends Controller
 {
     /**
+     * 
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:admin');
+    }
+
+    /**
      * @author: tenhayko
      * Display a listing of the resource.
      * @return Response
