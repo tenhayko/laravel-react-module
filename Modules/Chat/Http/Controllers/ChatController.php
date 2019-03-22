@@ -5,6 +5,7 @@ namespace Modules\Chat\Http\Controllers;
 use App\User;
 use Carbon\Carbon;
 use \Pusher\Pusher;
+use App\Traits\MessageTrait;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
@@ -16,20 +17,22 @@ use Modules\Chat\Entities\MBOConversation;
 class ChatController extends Controller
 {
     /**
+     * Traits
+     */
+    use MessageTrait;
+    /**
      * Pusher
      */
     private $APP_KEY = 'b7a1e4b0955d704d953c';
     private $APP_SECRET = 'e329ea5ade45144307f6';
     private $APP_ID = '673416';
     private $pusher;
-    private $user;
     /**
      * 
      */
     public function __construct()
     {
         $this->middleware('auth:admin');
-        $this->user = Auth::guard('web')->user();
         $this->pusher = new Pusher($this->APP_KEY, $this->APP_SECRET, $this->APP_ID, [
             'cluster' => 'ap2',
             'encrypted' => true
@@ -71,6 +74,8 @@ class ChatController extends Controller
      */
     public function getMessage($conversation_id = false)
     {
+        $this->echoMessage();
+        die;
         if($conversation_id){
             $conversation = Conversation::with(['member'=>function($query){
                 $query->with(['user'=>function($q){
@@ -78,7 +83,7 @@ class ChatController extends Controller
                 }]);
             }])->whereId($conversation_id)->first();
         }else{
-            $user_id = $this->user->id;
+            $user_id = Auth::guard('web')->user()->id;
             $conversation = Conversation::select('conversations.*')->with(['member'=>function($query){
                 $query->with(['user'=>function($q){
                     $q->with('userInfo');
@@ -91,16 +96,17 @@ class ChatController extends Controller
             $message = [];
             $user_id = false;
             $i = 0;
-            foreach ($conversation->messages as $key => $value) {
-                if ($user_id && $user_id == $value->user_id) {
-                    $message [$i]['user_id'] = $value->user_id;
-                    $message [$i]['message'][] = $value->toArray();
+            $mes = array_reverse($conversation->messages->take(50)->toArray());
+            foreach ($mes as $key => $value) {
+                if ($user_id && $user_id == $value['user_id']) {
+                    $message [$i]['user_id'] = $value['user_id'];
+                    $message [$i]['message'][] = $value;
                 }else{
                     if(array_key_exists($i,$message))
                     $i++;
-                    $user_id = $value->user_id;
-                    $message [$i]['user_id'] = $value->user_id;
-                    $message [$i]['message'][] = $value->toArray();
+                    $user_id = $value['user_id'];
+                    $message [$i]['user_id'] = $value['user_id'];
+                    $message [$i]['message'][] = $value;
                 }
             }
             unset($conversation->messages);
@@ -119,7 +125,7 @@ class ChatController extends Controller
         {
             return $this->getMessage($request->conversation_id);
         }else{
-            $user_id = $this->user->id;
+            $user_id = Auth::guard('web')->user()->id;
             $friend_id = $request->user_id;
             if($friend_id)
             {
@@ -149,17 +155,18 @@ class ChatController extends Controller
      */
     public function sendMessage(Request $request)
     {
+        $user = Auth::guard('web')->user();
         $channelName = 'channel-chat';
-        $message = $this->user->messages()->create([
+        $message = $user->messages()->create([
             'messages' => $request->input('messages'),
             'conversation_id' => $request->input('conversation_id')
         ]);
         $conversation = Conversation::where('id',$request->input('conversation_id'))->first();
-        $data['user_id'] = $this->user->id;
+        $data['user_id'] = $user->id;
         $data['messages'] = $request->input('messages');
         $data['conversation_id'] = $request->input('conversation_id');
         $data['conversation_user'] = $conversation->user;
-        $userConversation = MBOConversation::where('conversation_id', $request->input('conversation_id'))->whereNotIn('user_id',[$this->user->id])->get();
+        $userConversation = MBOConversation::where('conversation_id', $request->input('conversation_id'))->whereNotIn('user_id',[$user->id])->get();
         if($userConversation){
             foreach($userConversation as $value){
                 $this->pusher->trigger('channel-chat', 'user-'.$value->user_id, $data);
