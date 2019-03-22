@@ -16,11 +16,24 @@ use Modules\Chat\Entities\MBOConversation;
 class ChatController extends Controller
 {
     /**
+     * Pusher
+     */
+    private $APP_KEY = 'b7a1e4b0955d704d953c';
+    private $APP_SECRET = 'e329ea5ade45144307f6';
+    private $APP_ID = '673416';
+    private $pusher;
+    private $user;
+    /**
      * 
      */
     public function __construct()
     {
         $this->middleware('auth:admin');
+        $this->user = Auth::guard('web')->user();
+        $this->pusher = new Pusher($this->APP_KEY, $this->APP_SECRET, $this->APP_ID, [
+            'cluster' => 'ap2',
+            'encrypted' => true
+        ]);
     }
 
     /**
@@ -65,7 +78,7 @@ class ChatController extends Controller
                 }]);
             }])->whereId($conversation_id)->first();
         }else{
-            $user_id = Auth::guard('web')->user()->id;
+            $user_id = $this->user->id;
             $conversation = Conversation::select('conversations.*')->with(['member'=>function($query){
                 $query->with(['user'=>function($q){
                     $q->with('userInfo');
@@ -106,7 +119,7 @@ class ChatController extends Controller
         {
             return $this->getMessage($request->conversation_id);
         }else{
-            $user_id = Auth::guard('web')->user()->id;
+            $user_id = $this->user->id;
             $friend_id = $request->user_id;
             if($friend_id)
             {
@@ -136,25 +149,20 @@ class ChatController extends Controller
      */
     public function sendMessage(Request $request)
     {
-        $user = Auth::user();
         $channelName = 'channel-chat';
-        $message = $user->messages()->create([
+        $message = $this->user->messages()->create([
             'messages' => $request->input('messages'),
             'conversation_id' => $request->input('conversation_id')
         ]);
-        $pusher = new Pusher('b7a1e4b0955d704d953c', 'e329ea5ade45144307f6', '673416', [
-            'cluster' => 'ap2',
-            'encrypted' => true
-        ]);
         $conversation = Conversation::where('id',$request->input('conversation_id'))->first();
-        $data['user_id'] = $user->id;
+        $data['user_id'] = $this->user->id;
         $data['messages'] = $request->input('messages');
         $data['conversation_id'] = $request->input('conversation_id');
         $data['conversation_user'] = $conversation->user;
-        $userConversation = MBOConversation::where('conversation_id', $request->input('conversation_id'))->whereNotIn('user_id',[$user->id])->get();
+        $userConversation = MBOConversation::where('conversation_id', $request->input('conversation_id'))->whereNotIn('user_id',[$this->user->id])->get();
         if($userConversation){
             foreach($userConversation as $value){
-                $pusher->trigger('channel-chat', 'user-'.$value->user_id, $data);
+                $this->pusher->trigger('channel-chat', 'user-'.$value->user_id, $data);
             }
         }
         return ['status' => 'Message Sent!'];
@@ -167,12 +175,8 @@ class ChatController extends Controller
     {
         $socketId = $request->socket_id;
         $channelName = $request->channel_name;
-        $pusher = new Pusher('b7a1e4b0955d704d953c', 'e329ea5ade45144307f6', '673416', [
-            'cluster' => 'ap2',
-            'encrypted' => true
-        ]);
         $presence_data = ['name'=>auth()->user()->name];
-        $key = $pusher->presence_auth($channelName, $socketId, auth()->id(), $presence_data);
+        $key = $this->pusher->presence_auth($channelName, $socketId, auth()->id(), $presence_data);
         return response($key);
     }
 }
