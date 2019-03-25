@@ -143,7 +143,7 @@ class Messages extends Component {
     handleConversation(e,user) {
         if(user.conversation_user != undefined) {
             if(user.conversation_user.conversation_id != this.state.convesation.id){
-                axios.post('/chat/conversation', {conversation_id : user.conversation_user.conversation_id}).then(response => {
+                axios.get('/chat/conversation', {params:{conversation_id : user.conversation_user.conversation_id}}).then(response => {
                     this.setState({ 
                         convesation: response.data,
                         messages: response.data.messages,
@@ -153,7 +153,7 @@ class Messages extends Component {
                 });
             }
         }else{
-            axios.post('/chat/conversation', {user_id : user.id}).then(response => {
+            axios.get('/chat/conversation', {params: {user_id : user.id}}).then(response => {
                 user.conversation_user = response.data.conversation;
                 this.setState({ 
                     convesation: response.data.message,

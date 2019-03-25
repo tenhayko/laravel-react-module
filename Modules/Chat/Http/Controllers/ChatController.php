@@ -5,12 +5,12 @@ namespace Modules\Chat\Http\Controllers;
 use App\User;
 use Carbon\Carbon;
 use \Pusher\Pusher;
-use App\Traits\MessageTrait;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\Chat\Entities\Message;
 use Illuminate\Support\Facades\Auth;
+use Modules\Chat\Traits\MessageTrait;
 use Modules\Chat\Entities\Conversation;
 use Modules\Chat\Entities\MBOConversation;
 
@@ -74,8 +74,6 @@ class ChatController extends Controller
      */
     public function getMessage($conversation_id = false)
     {
-        $this->echoMessage();
-        die;
         if($conversation_id){
             $conversation = Conversation::with(['member'=>function($query){
                 $query->with(['user'=>function($q){
@@ -91,26 +89,7 @@ class ChatController extends Controller
             }])->join('m_b_o_conversations', 'conversations.id', '=', 'm_b_o_conversations.conversation_id')->where('m_b_o_conversations.user_id',$user_id)->first();
         }
         if($conversation){
-            $conversation->members = $conversation->member->keyBy('user_id');
-            unset($conversation->member);
-            $message = [];
-            $user_id = false;
-            $i = 0;
-            $mes = array_reverse($conversation->messages->take(50)->toArray());
-            foreach ($mes as $key => $value) {
-                if ($user_id && $user_id == $value['user_id']) {
-                    $message [$i]['user_id'] = $value['user_id'];
-                    $message [$i]['message'][] = $value;
-                }else{
-                    if(array_key_exists($i,$message))
-                    $i++;
-                    $user_id = $value['user_id'];
-                    $message [$i]['user_id'] = $value['user_id'];
-                    $message [$i]['message'][] = $value;
-                }
-            }
-            unset($conversation->messages);
-            $conversation->messages = $message;
+            $conversation = $this->buildConversation($conversation);
         }
         return $conversation;
     }

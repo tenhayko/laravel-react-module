@@ -80730,7 +80730,7 @@ var Messages = function (_Component) {
 
             if (user.conversation_user != undefined) {
                 if (user.conversation_user.conversation_id != this.state.convesation.id) {
-                    __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('/chat/conversation', { conversation_id: user.conversation_user.conversation_id }).then(function (response) {
+                    __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get('/chat/conversation', { params: { conversation_id: user.conversation_user.conversation_id } }).then(function (response) {
                         _this5.setState({
                             convesation: response.data,
                             messages: response.data.messages
@@ -80740,7 +80740,7 @@ var Messages = function (_Component) {
                     });
                 }
             } else {
-                __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('/chat/conversation', { user_id: user.id }).then(function (response) {
+                __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get('/chat/conversation', { params: { user_id: user.id } }).then(function (response) {
                     user.conversation_user = response.data.conversation;
                     _this5.setState({
                         convesation: response.data.message,
