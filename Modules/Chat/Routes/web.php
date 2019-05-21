@@ -18,6 +18,10 @@ Route::prefix('chat')->group(function() {
     Route::post('messages', 'ChatController@sendMessage');
     Route::post('conversation', 'ChatController@getConversation');
 });
+Route::prefix('firebase')->group(function() {
+    Route::get('/', 'ChatController@firebase');
+});
+Route::post('/pushmesage', 'ChatController@pushmesage');
 Route::prefix('admin')->group(function() {
     Route::get('/chat', 'MessageController@index')->name('chat');
     Route::get('user/list', 'UserController@getList');

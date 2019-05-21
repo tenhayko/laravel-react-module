@@ -13,6 +13,11 @@ import 'froala-editor/css/froala_editor.pkgd.min.css';
 import 'font-awesome/css/font-awesome.css';
 
 import FroalaEditor from 'react-froala-wysiwyg';
+/*
+ * FroalaEditor
+ * Can phai xu ly them ve image manager
+ * https://www.froala.com/wysiwyg-editor/docs/concepts/image/manager
+ */
 const config = {
     imageUploadURL: '/upload',
     requestHeaders:{

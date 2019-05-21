@@ -56,7 +56,7 @@ Route::get('/view-clear', function() {
 });
 
 //Clear Config cache:
-Route::get('/config-cache', function() {
-    $exitCode = Artisan::call('config:cache');
-    return '<h1>Clear Config cleared</h1>';
+Route::get('/link', function() {
+    $exitCode = Artisan::call('storage:link');
+    return '<h1>Linked</h1>';
 });

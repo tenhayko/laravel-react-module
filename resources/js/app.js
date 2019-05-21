@@ -17,3 +17,4 @@ require('./components/Example');
 require('./components/EditorComponent');
 require('./components/App');
 require('./components/Chat');
+require('./components/Front');

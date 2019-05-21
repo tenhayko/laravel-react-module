@@ -25,6 +25,51 @@ class ChatController extends Controller
         return view('chat::index');
     }
 
+    public function firebase()
+    {
+        $this->sendGCM('aloooo', 'fZw1mPcEloE:APA91bGwat2lXuCTUOSHG_ofYUmLkWJTZbKnqk6C_69gDz4mhZ6Yu4tjJuBjnv7m6G5_3ncaStds_NiVa19WxTJdFsEIkqwb-CelBtcfT0DYO5THXfzdTn8qaUUH5jJsvNYwtOravtIQ');
+        // return view('chat::firebase');
+    }
+
+    public function pushmesage(Request $request)
+    {
+        echo "<pre>";
+        print_r($request->all());
+        $this->sendGCM('aloooo', $request->tokenCMS);
+    }
+    public function sendGCM($message, $id) {
+
+
+        $url = 'https://fcm.googleapis.com/fcm/send';
+    
+        $fields = array (
+                'registration_ids' => array (
+                        $id
+                ),
+                'data' => array (
+                        "body" => 'helloooooooooooo',
+                        "icon" => 'https://ngaoo.com/images/ngaoo-logo.png',
+                        "link" => 'https://ngaoo.com/firebase'
+                )
+        );
+        $fields = json_encode ( $fields );
+    
+        $headers = array (
+                'Authorization: key=' . "AAAA-3prNxQ:APA91bFhKCcGEuAFIsLn7BU3jV845PC-DZZlbtpVirwnG2-1PLKe_QgYBZVHrJ-3covq2afn1fR9GyoYmP0WF_3PNFQFfQ9l7dme9SNzr24YSBDU9r7zo6ONpsxT8dj4AMyDHLYQAteC",
+                'Content-Type: application/json'
+        );
+    
+        $ch = curl_init ();
+        curl_setopt ( $ch, CURLOPT_URL, $url );
+        curl_setopt ( $ch, CURLOPT_POST, true );
+        curl_setopt ( $ch, CURLOPT_HTTPHEADER, $headers );
+        curl_setopt ( $ch, CURLOPT_RETURNTRANSFER, true );
+        curl_setopt ( $ch, CURLOPT_POSTFIELDS, $fields );
+    
+        $result = curl_exec ( $ch );
+        echo $result;
+        curl_close ( $ch );
+    }
     /**
      * @author: tenhayko
      */
