@@ -9,6 +9,14 @@ use Illuminate\Routing\Controller;
 class MessageController extends Controller
 {
     /**
+     * 
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:admin');
+    }
+
+    /**
      * Display a listing of the resource.
      * @return Response
      */

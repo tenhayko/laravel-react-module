@@ -10,11 +10,35 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\Chat\Entities\Message;
 use Illuminate\Support\Facades\Auth;
+use Modules\Chat\Traits\MessageTrait;
 use Modules\Chat\Entities\Conversation;
 use Modules\Chat\Entities\MBOConversation;
 
 class ChatController extends Controller
 {
+    /**
+     * Traits
+     */
+    use MessageTrait;
+    /**
+     * Pusher
+     */
+    private $APP_KEY = 'b7a1e4b0955d704d953c';
+    private $APP_SECRET = 'e329ea5ade45144307f6';
+    private $APP_ID = '673416';
+    private $pusher;
+    /**
+     * 
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:admin');
+        $this->pusher = new Pusher($this->APP_KEY, $this->APP_SECRET, $this->APP_ID, [
+            'cluster' => 'ap2',
+            'encrypted' => true
+        ]);
+    }
+
     /**
      * @author: tenhayko
      * Display a listing of the resource.
@@ -110,25 +134,7 @@ class ChatController extends Controller
             }])->join('m_b_o_conversations', 'conversations.id', '=', 'm_b_o_conversations.conversation_id')->where('m_b_o_conversations.user_id',$user_id)->first();
         }
         if($conversation){
-            $conversation->members = $conversation->member->keyBy('user_id');
-            unset($conversation->member);
-            $message = [];
-            $user_id = false;
-            $i = 0;
-            foreach ($conversation->messages as $key => $value) {
-                if ($user_id && $user_id == $value->user_id) {
-                    $message [$i]['user_id'] = $value->user_id;
-                    $message [$i]['message'][] = $value->toArray();
-                }else{
-                    if(array_key_exists($i,$message))
-                    $i++;
-                    $user_id = $value->user_id;
-                    $message [$i]['user_id'] = $value->user_id;
-                    $message [$i]['message'][] = $value->toArray();
-                }
-            }
-            unset($conversation->messages);
-            $conversation->messages = $message;
+            $conversation = $this->buildConversation($conversation);
         }
         return $conversation;
     }
@@ -173,15 +179,11 @@ class ChatController extends Controller
      */
     public function sendMessage(Request $request)
     {
-        $user = Auth::user();
+        $user = Auth::guard('web')->user();
         $channelName = 'channel-chat';
         $message = $user->messages()->create([
             'messages' => $request->input('messages'),
             'conversation_id' => $request->input('conversation_id')
-        ]);
-        $pusher = new Pusher('b7a1e4b0955d704d953c', 'e329ea5ade45144307f6', '673416', [
-            'cluster' => 'ap2',
-            'encrypted' => true
         ]);
         $conversation = Conversation::where('id',$request->input('conversation_id'))->first();
         $data['user_id'] = $user->id;
@@ -191,7 +193,7 @@ class ChatController extends Controller
         $userConversation = MBOConversation::where('conversation_id', $request->input('conversation_id'))->whereNotIn('user_id',[$user->id])->get();
         if($userConversation){
             foreach($userConversation as $value){
-                $pusher->trigger('channel-chat', 'user-'.$value->user_id, $data);
+                $this->pusher->trigger('channel-chat', 'user-'.$value->user_id, $data);
             }
         }
         return ['status' => 'Message Sent!'];
@@ -204,12 +206,8 @@ class ChatController extends Controller
     {
         $socketId = $request->socket_id;
         $channelName = $request->channel_name;
-        $pusher = new Pusher('b7a1e4b0955d704d953c', 'e329ea5ade45144307f6', '673416', [
-            'cluster' => 'ap2',
-            'encrypted' => true
-        ]);
         $presence_data = ['name'=>auth()->user()->name];
-        $key = $pusher->presence_auth($channelName, $socketId, auth()->id(), $presence_data);
+        $key = $this->pusher->presence_auth($channelName, $socketId, auth()->id(), $presence_data);
         return response($key);
     }
 }
