@@ -11,11 +11,10 @@
 		}
 		.resizable {
 		  background: white;
-		  width: 100px;
+		  width: 232px;
 		  height: 100px;
 		  position: relative;
-		  top: 100px;
-		  left: 100px;
+		  float: left;
 		}
 
 		.resizable .resizers{
@@ -54,37 +53,58 @@
 		   	right: 0px;
 	    	cursor: ew-resize;
 		}
+		.parent{
+			width: 400px;
+			height: 120px;
+			overflow-x: scroll;
+			overflow-y: hidden;
+		}
+		.resize{
+			overflow: hidden;
+			width: 697px;
+			border:1px solid #fff;
+		}
 	</style>
 </head>
 <body>
-	<div class='resizable'>
-	  <div class='resizers'>
-	    <div class='resizer bottom-right'></div>
-	  </div>
-	</div>
-	<div class='resizable'>
-	  <div class='resizers'>
-	    <div class='resizer bottom-right'></div>
-	  </div>
-	</div>
-	<div class='resizable'>
-	  <div class='resizers'>
-	    <div class='resizer bottom-right'></div>
-	  </div>
+	<div style="width: 700px">
+		<div style="border-right: 1px solid #d1d1d1;overflow: hidden;overflow-x: auto;">
+			<div class="resize">
+				<div class='resizable'>
+				  <div class='resizers'>
+				    <div class='resizer bottom-right'></div>
+				  </div>
+				</div>
+				<div class='resizable'>
+				  <div class='resizers'>
+				    <div class='resizer bottom-right'></div>
+				  </div>
+				</div>
+				<div class='resizable'>
+				  <div class='resizers'>
+				    <div class='resizer bottom-right'></div>
+				  </div>
+				</div>
+			</div>
+		</div>
 	</div>
 	<script>
 		/*Make resizable div by Hung Nguyen*/
 		function makeResizableDiv(div) {
+			var parentResize = $(div).parent('div.resize');
+			var parentScroll = $(div).parent('div.resize').parent('div');
+			var minimum_size_parent = parentResize.width();
 			$(div).each(function(index, el) {
 				var element = $(el);
 			  	var currentResizer = $(el).children('div.resizers').children('div.resizer');
-			  	var minimum_size = 20;
+			  	var minimum_size = 232;
 			  	var original_width = 0;
 			  	var original_mouse_x = 0;
-
+			  	var widthParent = 0;
 			    currentResizer.on('mousedown', function(e) {
 			      e.preventDefault()
 			      original_width = element.width();
+			      widthParent = parentResize.width();
 			      original_mouse_x = e.pageX;
 			      window.addEventListener('mousemove', resize)
 			      window.addEventListener('mouseup', stopResize)
@@ -92,8 +112,16 @@
 			    
 			    function resize(e) {
 			      	var width = original_width + (e.pageX - original_mouse_x);
+			      	var newWidthP = widthParent + (e.pageX - original_mouse_x);
 			        if (width > minimum_size) {
 			          $(el).width(width);
+			        }else{
+			        	$(el).width(minimum_size);
+			        }
+			        if (newWidthP > minimum_size_parent) {
+			        	parentResize.width(newWidthP);
+			        }else{
+			        	parentResize.width(minimum_size_parent);
 			        }
 			    }
 			    function stopResize() {
