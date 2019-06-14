@@ -47,3 +47,4 @@ https://stackoverflow.com/questions/201323/how-to-validate-an-email-address-usin
 
 ##lazyload 
 https://completejavascript.com/trien-khai-lazy-loading-image-trong-react/
+https://luubinhan.github.io/blog/2018-10-07-huong-dan-lazy-load-component-react/
