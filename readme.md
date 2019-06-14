@@ -44,3 +44,6 @@ https://stackoverflow.com/questions/23116001/facebook-like-and-share-button-with
 https://github.com/JedWatson/react-select
 ```
 https://stackoverflow.com/questions/201323/how-to-validate-an-email-address-using-a-regular-expression
+
+##lazyload 
+https://completejavascript.com/trien-khai-lazy-loading-image-trong-react/
