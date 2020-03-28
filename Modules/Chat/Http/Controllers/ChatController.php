@@ -51,8 +51,9 @@ class ChatController extends Controller
 
     public function firebase()
     {
-        $this->sendGCM('aloooo', 'fZw1mPcEloE:APA91bGwat2lXuCTUOSHG_ofYUmLkWJTZbKnqk6C_69gDz4mhZ6Yu4tjJuBjnv7m6G5_3ncaStds_NiVa19WxTJdFsEIkqwb-CelBtcfT0DYO5THXfzdTn8qaUUH5jJsvNYwtOravtIQ');
+        // $this->sendGCM('aloooo', 'fZw1mPcEloE:APA91bGwat2lXuCTUOSHG_ofYUmLkWJTZbKnqk6C_69gDz4mhZ6Yu4tjJuBjnv7m6G5_3ncaStds_NiVa19WxTJdFsEIkqwb-CelBtcfT0DYO5THXfzdTn8qaUUH5jJsvNYwtOravtIQ');
         // return view('chat::firebase');
+        return view('chat::app');
     }
 
     public function pushmesage(Request $request)
