@@ -12,6 +12,7 @@
 */
 
 Route::get('/', 'LandingPageController@vietcombank')->name('vietcombank');
+Route::post('/landing/sign-up', 'LandingPageController@signUp')->name('dangky');
 
 Auth::routes();
 

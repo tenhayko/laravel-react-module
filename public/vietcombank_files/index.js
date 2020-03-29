@@ -36,7 +36,8 @@ $('#header-halfbg-form-form').validate({
 //								CONTACT FORM SCRIPT
 //------------------------------------------------------------------------------------
 
-$('#header-halfbg-form-form').submit(function () {
+$('#header-halfbg-form-form').submit(function (e) {
+  e.preventDefault();
     // submit the form
     //data area
     var data = [];
@@ -70,33 +71,36 @@ $('#header-halfbg-form-form').submit(function () {
     //end data area
     if ($(this).valid()) {
         $(this).find('[type=submit]').button('loading');
-        var form = new FormData();
-        var $inputFiles = $('.inputfile');
-        $inputFiles.each(function(indx, inputFile){
-            $.each(inputFile.files, function(i, file) {
-                form.append('file-' + indx + '-' + i, file);
-            });
-        });
-        form.append('data', JSON.stringify(data));
-        form.append('id', this.id);
+        var dataForm = $('#header-halfbg-form-form').serialize();
         var action = $(this).attr('action');
-        $.ajax({
-            url: action,
-            type: 'POST',
-            data: form,
-            cache: false,
-            contentType: false,
-            processData: false,
-            success: function () {
-	$('#header-halfbg-form-form').find('[type=submit]').button('complete');
-},
-            error: function () {
-	$('#header-halfbg-form-form').find('[type=submit]').button('reset');
-}
+        var savingItem = $.post(action, dataForm, null, 'json');
+        savingItem.done(function(res) {
+            console.log(res);
+            $('#header-halfbg-form-form').find('[type=submit]').button('complete');
         });
+        savingItem.fail(function(res) {
+           $('#header-halfbg-form-form').find('[type=submit]').button('reset');
+        });
+
     } else {
         //if data was invalidated
     }
+    return false;
+});
+
+$('#formSignUp').submit(function (e) {
+  e.preventDefault();
+    // submit the form
+    var dataForm = $('#formSignUp').serialize();
+    var action = $(this).attr('action');
+    var savingItem = $.post(action, dataForm, null, 'json');
+    savingItem.done(function(res) {
+        alert('Đăng ký thành công!!');
+    });
+    savingItem.fail(function(res) {
+       
+    });
+
     return false;
 });
 
@@ -143,7 +147,8 @@ $('#contact-center-form-form').validate({
 //								CONTACT FORM SCRIPT
 //------------------------------------------------------------------------------------
 
-$('#contact-center-form-form').submit(function () {
+$('#contact-center-form-form').submit(function (e) {
+    e.preventDefault();
     // submit the form
     //data area
     var data = [];
@@ -177,29 +182,15 @@ $('#contact-center-form-form').submit(function () {
     //end data area
     if ($(this).valid()) {
         $(this).find('[type=submit]').button('loading');
-        var form = new FormData();
-        var $inputFiles = $('.inputfile');
-        $inputFiles.each(function(indx, inputFile){
-            $.each(inputFile.files, function(i, file) {
-                form.append('file-' + indx + '-' + i, file);
-            });
-        });
-        form.append('data', JSON.stringify(data));
-        form.append('id', this.id);
         var action = $(this).attr('action');
-        $.ajax({
-            url: action,
-            type: 'POST',
-            data: form,
-            cache: false,
-            contentType: false,
-            processData: false,
-            success: function () {
-	$('#contact-center-form-form').find('[type=submit]').button('complete');
-},
-            error: function () {
-	$('#contact-center-form-form').find('[type=submit]').button('reset');
-}
+        var dataForm = $('#contact-center-form-form').serialize();
+        var savingItem = $.post(action, dataForm, null, 'json');
+        savingItem.done(function(res) {
+            console.log(res);
+            $('#contact-center-form-form').find('[type=submit]').button('complete');
+        });
+        savingItem.fail(function(res) {
+           $('#contact-center-form-form').find('[type=submit]').button('reset');
         });
     } else {
         //if data was invalidated
@@ -210,127 +201,186 @@ $('#contact-center-form-form').submit(function () {
 
 
  var check = false;
-$.get('https://slimweb.vn/builder/client_data.json', function(data) {
-   if(data!==''){
-  var json_obj = JSON.parse(data);
-  var count = Object.keys(json_obj["info"]).length;
-  count = count - 1;
-  var content_org = $("#wrap #content_cl").text();
+// $.get('https://slimweb.vn/builder/client_data.json', function(data) {
+//    if(data!==''){
+//   var json_obj = JSON.parse(data);
+//   var count = Object.keys(json_obj["info"]).length;
+//   count = count - 1;
+//   var content_org = $("#wrap #content_cl").text();
  
-  $("#wrap #tool-fake-client1").fadeOut();
-  $("#wrap #tool-fake-client1").css("left","-500px");
-function myFunction() {
-  var random = Math.floor(Math.random() * (count - 0 + 1) + 0);
-  var name = json_obj["info"][random].name;
-  var email = json_obj["info"][random].email;
-  var image = json_obj["info"][random].image;
-  var city = json_obj["info"][random].city;
-  var time_ago=Math.floor((Math.random() * 60) + 10);
+//   $("#wrap #tool-fake-client1").fadeOut();
+//   $("#wrap #tool-fake-client1").css("left","-500px");
+// function myFunction() {
+//   var random = Math.floor(Math.random() * (count - 0 + 1) + 0);
+//   var name = json_obj["info"][random].name;
+//   var email = json_obj["info"][random].email;
+//   var image = json_obj["info"][random].image;
+//   var city = json_obj["info"][random].city;
+//   var time_ago=Math.floor((Math.random() * 60) + 10);
 
-  var min = 10,
-  max = 40;
-  var rand = Math.floor(Math.random() * (max - min + 1) + min);
-  var rand_first = Math.floor(Math.random() * 3 + 1);
-  var time = ((rand * 1000) + 6500);
-  var time_firts;
-  if(check == false){
-	  time_firts = rand_first * 1000;
-  }else{
-	  time_firts = 0;
-  }
-	setTimeout(function(){
-	$("#wrap #img_cl").attr("src",image);
-  $("#wrap #img_cl").attr("data-src",image);
-  var content=content_org;
-  content=content.replace("*city*", "<span id=cl_cl>"+city+"</span>");
-  content=content.replace("*name*", "<span id=cl_cl>"+name+"</span>");
-  content=content.replace("*email*", "<span id=cl_cl>"+email+"</span>");
-  $("#wrap #content_cl").html(content);
-  $("#wrap #time_cl").html("Cách đây "+time_ago+" phút");
+//   var min = 10,
+//   max = 40;
+//   var rand = Math.floor(Math.random() * (max - min + 1) + min);
+//   var rand_first = Math.floor(Math.random() * 3 + 1);
+//   var time = ((rand * 1000) + 6500);
+//   var time_firts;
+//   if(check == false){
+// 	  time_firts = rand_first * 1000;
+//   }else{
+// 	  time_firts = 0;
+//   }
+// 	setTimeout(function(){
+// 	$("#wrap #img_cl").attr("src",image);
+//   $("#wrap #img_cl").attr("data-src",image);
+//   var content=content_org;
+//   content=content.replace("*city*", "<span id=cl_cl>"+city+"</span>");
+//   content=content.replace("*name*", "<span id=cl_cl>"+name+"</span>");
+//   content=content.replace("*email*", "<span id=cl_cl>"+email+"</span>");
+//   $("#wrap #content_cl").html(content);
+//   $("#wrap #time_cl").html("Cách đây "+time_ago+" phút");
 
- 	$( "#wrap #tool-fake-client1" ).fadeIn();
-	$("#wrap #tool-fake-client1").animate({
-		left: "10px",
-	},1500);
+//  	$( "#wrap #tool-fake-client1" ).fadeIn();
+// 	$("#wrap #tool-fake-client1").animate({
+// 		left: "10px",
+// 	},1500);
 
-	setTimeout(function(){
-		 $( "#wrap #tool-fake-client1" ).fadeOut();
-		 $("#wrap #tool-fake-client1").animate({
-		left: "-500px",
-		});
-	 },6000);
+// 	setTimeout(function(){
+// 		 $( "#wrap #tool-fake-client1" ).fadeOut();
+// 		 $("#wrap #tool-fake-client1").animate({
+// 		left: "-500px",
+// 		});
+// 	 },6000);
 
-	},time_firts);
-	check = true;
-  setTimeout(myFunction, time);
-}
-myFunction();
+// 	},time_firts);
+// 	check = true;
+//   setTimeout(myFunction, time);
+// }
+// myFunction();
 
-   }
-}, 'text');
+//    }
+// }, 'text');
  var check = false;
-$.get('https://slimweb.vn/builder/client_data.json', function(data) {
-   if(data!==''){
-  var json_obj = JSON.parse(data);
-  var count = Object.keys(json_obj["info"]).length;
-  count = count - 1;
-  var content_org = $("#wrap #content_cl").text();
+// $.get('https://slimweb.vn/builder/client_data.json', function(data) {
+//    if(data!==''){
+//   var json_obj = JSON.parse(data);
+//   var count = Object.keys(json_obj["info"]).length;
+//   count = count - 1;
+//   var content_org = $("#wrap #content_cl").text();
  
-  $("#wrap #tool-fake-client1").fadeOut();
-  $("#wrap #tool-fake-client1").css("left","-500px");
-function myFunction() {
-  var random = Math.floor(Math.random() * (count - 0 + 1) + 0);
-  var name = json_obj["info"][random].name;
-  var email = json_obj["info"][random].email;
-  var image = json_obj["info"][random].image;
-  var city = json_obj["info"][random].city;
-  var time_ago=Math.floor((Math.random() * 60) + 10);
+//   $("#wrap #tool-fake-client1").fadeOut();
+//   $("#wrap #tool-fake-client1").css("left","-500px");
+// function myFunction() {
+//   var random = Math.floor(Math.random() * (count - 0 + 1) + 0);
+//   var name = json_obj["info"][random].name;
+//   var email = json_obj["info"][random].email;
+//   var image = json_obj["info"][random].image;
+//   var city = json_obj["info"][random].city;
+//   var time_ago=Math.floor((Math.random() * 60) + 10);
 
-  var min = 10,
-  max = 40;
-  var rand = Math.floor(Math.random() * (max - min + 1) + min);
-  var rand_first = Math.floor(Math.random() * 3 + 1);
-  var time = ((rand * 1000) + 6500);
-  var time_firts;
-  if(check == false){
-	  time_firts = rand_first * 1000;
-  }else{
-	  time_firts = 0;
-  }
-	setTimeout(function(){
-	$("#wrap #img_cl").attr("src",image);
-  $("#wrap #img_cl").attr("data-src",image);
-  var content=content_org;
-  content=content.replace("*city*", "<span id=cl_cl>"+city+"</span>");
-  content=content.replace("*name*", "<span id=cl_cl>"+name+"</span>");
-  content=content.replace("*email*", "<span id=cl_cl>"+email+"</span>");
-  $("#wrap #content_cl").html(content);
-  $("#wrap #time_cl").html("Cách đây "+time_ago+" phút");
+//   var min = 10,
+//   max = 40;
+//   var rand = Math.floor(Math.random() * (max - min + 1) + min);
+//   var rand_first = Math.floor(Math.random() * 3 + 1);
+//   var time = ((rand * 1000) + 6500);
+//   var time_firts;
+//   if(check == false){
+// 	  time_firts = rand_first * 1000;
+//   }else{
+// 	  time_firts = 0;
+//   }
+// 	setTimeout(function(){
+// 	$("#wrap #img_cl").attr("src",image);
+//   $("#wrap #img_cl").attr("data-src",image);
+//   var content=content_org;
+//   content=content.replace("*city*", "<span id=cl_cl>"+city+"</span>");
+//   content=content.replace("*name*", "<span id=cl_cl>"+name+"</span>");
+//   content=content.replace("*email*", "<span id=cl_cl>"+email+"</span>");
+//   $("#wrap #content_cl").html(content);
+//   $("#wrap #time_cl").html("Cách đây "+time_ago+" phút");
 
- 	$( "#wrap #tool-fake-client1" ).fadeIn();
-	$("#wrap #tool-fake-client1").animate({
-		left: "10px",
-	},1500);
+//  	$( "#wrap #tool-fake-client1" ).fadeIn();
+// 	$("#wrap #tool-fake-client1").animate({
+// 		left: "10px",
+// 	},1500);
 
-	setTimeout(function(){
-		 $( "#wrap #tool-fake-client1" ).fadeOut();
-		 $("#wrap #tool-fake-client1").animate({
-		left: "-500px",
-		});
-	 },6000);
+// 	setTimeout(function(){
+// 		 $( "#wrap #tool-fake-client1" ).fadeOut();
+// 		 $("#wrap #tool-fake-client1").animate({
+// 		left: "-500px",
+// 		});
+// 	 },6000);
 
-	},time_firts);
-	check = true;
-  setTimeout(myFunction, time);
-}
-myFunction();
+// 	},time_firts);
+// 	check = true;
+//   setTimeout(myFunction, time);
+// }
+// myFunction();
 
-   }
-}, 'text');
+//    }
+// }, 'text');
 
 $(document).on('click', '.btbg', function() {
     $(this).find('.social_chat').toggleClass('hidden');
 });
 
 
+});
+jQuery(document).ready(function($) {
+    if ( jQuery().slick ) {
+        var slick = jQuery(".slick-carousel");
+        slick.each(function(){
+            var item        = jQuery(this).data('item'),
+                item_lg     = jQuery(this).data('item_lg'),
+                item_md     = jQuery(this).data('item_md'),
+                item_sm     = jQuery(this).data('item_sm'),
+                item_mb     = jQuery(this).data('item_mb'),
+                row         = jQuery(this).data('row'),
+                arrows      = jQuery(this).data('arrows'),
+                dots        = jQuery(this).data('dots'),
+                vertical    = jQuery(this).data('vertical');
+            jQuery(this).slick({
+                autoplay: true,
+                dots: dots,
+                arrows: arrows,
+                infinite: true,
+                autoplaySpeed: 2000,
+                vertical: vertical,
+                slidesToShow: item,
+                slidesToScroll: 1,
+                lazyLoad: 'ondemand',
+                // verticalSwiping: true,
+                rows: row,
+                responsive: [
+                    {
+                        breakpoint: 1200,
+                        settings: {
+                            slidesToShow: item_lg,
+                            slidesToScroll: 1,
+                        }
+                    },
+                    {
+                        breakpoint: 992,
+                        settings: {
+                            slidesToShow: item_md,
+                            slidesToScroll: 1,
+                        }
+                    },
+                    {
+                        breakpoint: 768,
+                        settings: {
+                            slidesToShow: item_sm,
+                            slidesToScroll: 1,
+                        }
+                    },
+                    {
+                        breakpoint: 576,
+                        settings: {
+                            slidesToShow: item_mb,
+                            slidesToScroll: 1,
+                        }
+                    }
+                ]
+            });
+        });
+    }
 });
