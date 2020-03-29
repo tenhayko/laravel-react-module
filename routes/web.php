@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'LandingPageController@vietcombank')->name('vietcombank');
 
 Auth::routes();
 
